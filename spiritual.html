@@ -29,8 +29,50 @@
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
   <div class="content">
-    <p>This is the spiritual content</p>
-    <!-- end .content -->
+  <h2>5774 High Holy Day Appeal </h2>
+  <p>I pledge that, during the coming year, I will fulfill the mitzvah/mitzvot which I am choosing below:</p>
+    <form id="form1" name="form1" method="post" action="index.php">
+    <div class=spirit>
+        <div>
+		<table class=spiritTable>
+            <tr><th>Torah</th></tr>
+            <tr><td><input type=checkbox name=torah1 id=torah1 />Learn to read Hebrew or increase my Hebrew skills</td></tr>
+            <tr><td><input type=checkbox name=torah2 id=torah2 />Learn to put on a tallit or tefillin</td></tr>
+            <tr><td><input type=checkbox name=torah3 id=torah3 />Attend Adult Education classes</td></tr>
+            <tr><td><input type=checkbox name=torah4 id=torah4 />Celebrate an Adult Bar/Bat Mitzvah</td></tr>
+        </table>
+        <br />
+        <table class="spiritTable" >
+            <tr><th>Avodah</th></tr>
+            <tr><td><input type=checkbox name=avodah1 id=avodah1 />Chant Torah/Haftorah</td></tr>
+            <tr><td><input type=checkbox name=avodah2 id=avodah2 />Attend Sunday and/or Wednesday morning Minyan</td></tr>
+            <tr><td><input type=checkbox name=avodah3 id=avodah3 />Learn to lead services</td></tr>
+            <tr><td><input type=checkbox name=avodah4 id=avodah4 />Attend Shabbat Services</td></tr>
+            <tr><td><input type=checkbox name=avodah5 id=avodah5 />Incorporate meditation into my day</td></tr>
+        </table>
+        </div>
+    	<div>
+      	<table class="spiritTable">
+            <tr><th>Gemilut Chasadim</th></tr>
+            <tr><td><input type=checkbox name=gemilut1 id=gemilut1 />Prepare food for the Family Promise program</td></tr>
+            <tr><td><input type=checkbox name=gemilut2 id=gemilut2 />Attend a Shivah Minyan</td></tr>
+            <tr><td><input type=checkbox name=gemilut3 id=gemilut3 />Join the Chessed committee</td></tr>
+            <tr><td><input type=checkbox name=gemilut4 id=gemilut4 />Visit the elderly or ill</td></tr>
+            <tr><td><input type=checkbox name=gemilut5 id=gemilut5 />Become an usher at Shabbat Services</td></tr>
+            <tr><td><input type=checkbox name=gemilut6 id=gemilut6 />Invite guests for Shabbat Dinner</td></tr>
+            <tr><td><input type=checkbox name=gemilut7 id=gemilut7 />Become a Buddy for a new family</td></tr>
+            <tr><td><input type=checkbox name=gemilut8 id=gemilut8 />Volunteer at Sunday supper</td></tr>
+            <tr><td><input type=checkbox name=gemilut9 id=gemilut9 />Donate blood</td></tr>
+            <tr><td><input type=checkbox name=gemilut10 id=gemilut10 />Volunteer in the CBI office</td></tr>
+        </table>
+		</div>
+    </div>
+    <div id=afterSpirit>
+        <input type=checkbox name=other id=other style=" display:block; float:none;"/>
+        <input type=text size=30 name=other_desc id=other_desc value="Other mitzvot" />
+    </div>
+    <input type=button onclick="addAction('spirit');" value=Pledge />
+    </form>
   </div>
   <!-- InstanceEndEditable -->
   <div class="footer">

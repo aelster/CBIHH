@@ -17,6 +17,15 @@ table.pledge_other {
 	float: none;
 }
 
+table.avodah {
+	float: left;
+}
+
+div.spirit div {
+	float: left;
+	background-color: #FFF;
+}
+
 .pledgeBtn {
 	font-size: 16px;
 }
@@ -49,4 +58,18 @@ hh_intro   {
 	position: absolute;
 	left: 575px;
 	top: 0;
+}
+.container .content #form1 .spirit div table th {
+	text-align: center;
+	background-color: #CCC49F;
+}
+.container .content #form1 .spirit div .spiritTable {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
 }
