@@ -1,0 +1,52 @@
+@charset "UTF-8";
+body {
+	width: 980px;
+}
+
+table.pledge {
+	margin-left: 100px;
+	float: left;
+}
+
+table.pledge td {
+	text-align: left;
+}
+
+table.pledge_other {
+	margin-left: 100px;
+	float: none;
+}
+
+.pledgeBtn {
+	font-size: 16px;
+}
+
+hh_intro   {
+	text-align: justify;
+}
+.content {
+	text-align: left;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.buttonOk {
+	background-color: #ADB96E;
+	font-size: large;
+}
+
+.buttonNotOk {
+	background-color: #FFF;
+	font-size: large;
+}
+
+#img1 {
+	display: block;
+}
+
+#img2 {
+	position: absolute;
+	left: 575px;
+	top: 0;
+}
