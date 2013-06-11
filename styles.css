@@ -59,17 +59,40 @@ hh_intro   {
 	left: 575px;
 	top: 0;
 }
-.container .content #form1 .spirit div table th {
+
+.spiritLeft {
+	width:475px;
+}
+
+.spiritRight {
+	width: 475px;
+}
+
+.spirit th {
 	text-align: center;
 	background-color: #CCC49F;
+	width:475px;
 }
-.container .content #form1 .spirit div .spiritTable {
+
+.spirit td {
+	text-align: left;
+}
+
+.spiritTable {
+	margin-left: 5px;
+	margin-bottom: 5px;
 	border-top-width: 1px;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
 	border-left-width: 1px;
 	border-top-style: solid;
-	border-right-style: solid;
+	border-right-style: solid
 	border-bottom-style: solid;
 	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+}
+
+.spiritBottom {
+	clear: both;
 }
