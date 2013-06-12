@@ -40,6 +40,14 @@ hh_intro   {
 	margin-right: 10px;
 }
 
+.content-fltlft {
+	text-align: left;
+	float: left;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
 .buttonOk {
 	background-color: #ADB96E;
 	font-size: large;
@@ -95,4 +103,7 @@ hh_intro   {
 
 .spiritBottom {
 	clear: both;
+}
+#video {
+	text-align: center;
 }
