@@ -33,43 +33,44 @@
   <h2>5774 High Holy Day Appeal </h2>
     <form action="index.php" method="post" id="form1">
     <input type=hidden name=action id=action />
+    <input type=hidden name=fields id=fields />
       <table>
         <tr>
           <td width="123">Last Name</td>
-          <td width="249"><input type="text" name="lastName" id="lastName" size=60 /></td>
+          <td width="249"><input type="text" name="paynow" id="lastName" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>First Name</td>
-          <td><input type="text" name="firstName" id="firstName" size=60 /></td>
+          <td><input type="text" name="paynow" id="firstName" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>Phone #</td>
-          <td><input type="text" name="phone" id="phone" size=60 /></td>
+          <td><input type="text" name="paynow" id="phone" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>E-mail Address</td>
-          <td><input type="text" name="email" id="email" size=60 /></td>
+          <td><input type="text" name="paynow" id="email" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
       </table>
       <table width="600">
         <tr>
           <td><label>
-            <input type="radio" name="payment" value="credit" id="payment_0" />
+            <input type="radio" name="paynow" value="credit" onClick="makeActive('paynow');" id="payment_0" />
             Charge my credit card on file</label></td>
         </tr>
         <tr>
           <td><label>
-            <input type="radio" name="payment" value="check" id="payment_1" />
+            <input type="radio" name="paynow" value="check" onClick="makeActive('paynow');" id="payment_1" />
             I will send a check within three days</label></td>
         </tr>
         <tr>
           <td><label>
-            <input type="radio" name="payment" value="call" id="payment_2" />
+            <input type="radio" name="paynow" value="call" onClick="makeActive('paynow');" id="payment_2" />
             Contact me about payment</label></td>
         </tr>
       </table>
       <h2>
-      <input type=submit class=pledgeBtn value=Submit />
+      <input type=button onclick="payNow();addAction('paynow');" class=pledgeBtn id=paynow value=Submit />
       </h2>
     </form>
   </div>
