@@ -80,7 +80,10 @@ function makeActive(area) {
 			}
 		}
 		
-		ok = ( num_filled == 4 && radio > 0 );
+		ok = ( num_filled == 4 );
+		if( radio_required ) {
+			ok = ok && ( radio > 0 );
+		}
 		e = document.getElementById('paynow');
 		if( ok ) {
 			e.className = 'buttonOk';
@@ -124,11 +127,16 @@ function spiritFields() {
 	var e = document.getElementsByName('spirit');
 	for( var i=0; i<e.length; i++ ) {
 		if( e[i].type == 'checkbox' && e[i].checked ) {
-			var f = e[i].parentNode;
-			for( var j=0; j<f.childNodes.length; j++ ) {
-			var g = f.childNodes[j];
-				if( f.childNodes[j].nodeType == 3 ) {  // TEXT_NODE
-					items.push( f.childNodes[j].nodeValue );
+			if( e[i].id == 'other' ) {
+				var f = document.getElementById('spiritOther');
+				items.push( f.value );
+			} else {
+				var f = e[i].parentNode;
+				for( var j=0; j<f.childNodes.length; j++ ) {
+				var g = f.childNodes[j];
+					if( f.childNodes[j].nodeType == 3 ) {  // TEXT_NODE
+						items.push( f.childNodes[j].nodeValue );
+					}
 				}
 			}
 		}

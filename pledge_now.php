@@ -24,7 +24,7 @@ global $gFrom;
 <body onload="firstName();">
 
 <div class="container">
-  <form action="index.php" method="post" id="form1">
+  <form action="" method="post" id="form1">
   <input type=hidden name=action id=action />
   <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
@@ -43,9 +43,12 @@ global $gFrom;
   <?php
   if( $gFrom == "financial" ) {
 	  $tag = "Financial Pledge";
+	  $radio = 1;
   } else if( $gFrom == "spiritual" ) {
 	  $tag = "Spiritual Pledge";
+	  $radio = 0;
   }
+  printf( "<script type='text/javascript'>var radio_required = %d;</script>", $radio );
   ?>
   <div class="content">
   <h2>5774 High Holy Day Appeal<br /><?php echo $tag ?></h2>

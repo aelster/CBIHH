@@ -2,6 +2,7 @@
 require_once 'lib/swift_required.php';
 
 global $gAction;
+
 ?>
 <html>
 <head>
@@ -12,7 +13,13 @@ global $gAction;
 <body>
 <?php
 
-if(0) {
+$debug = 0;
+$x = isset( $_REQUEST['bozo'] ) ? 1 : 0;
+if( $x ) {
+	$debug = $x;
+}
+
+if( $debug ) {
 	$tmp = array_keys( $_POST );
 	sort( $tmp );
 	foreach( $tmp as $key ) {
@@ -42,7 +49,7 @@ if( $action == "pledge" ) {
 	include( "tbd.php" );
 	
 } elseif( $action == "pledges_to_date" ) {
-	include( "tbd.php" );
+	include( "pledges_to_date.php" );
 	
 } elseif( $action == "mail" ) {
 	$keys = array_keys( $_POST );

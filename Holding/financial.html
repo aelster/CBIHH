@@ -24,7 +24,7 @@ global $gFrom;
 <body onload="firstName();">
 
 <div class="container">
-  <form action="index.php" method="post" id="form1">
+  <form action="" method="post" id="form1">
   <input type=hidden name=action id=action />
   <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
