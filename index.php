@@ -1,5 +1,7 @@
 <?php
 require_once 'lib/swift_required.php';
+
+global $gAction;
 ?>
 <html>
 <head>
@@ -9,24 +11,32 @@ require_once 'lib/swift_required.php';
 </head>
 <body>
 <?php
+
+if(1) {
+	$tmp = array_keys( $_POST );
+	sort( $tmp );
+	foreach( $tmp as $key ) {
+		printf( "_POST['%s'] = %s<br>", $key, $_POST[$key] );
+	}
+}
+
 $action = array_key_exists( "action", $_POST ) ? $_POST[ "action" ]  : "";
 if( ! $action ) $action = "pledge";
+$gFrom = array_key_exists( "from", $_POST ) ? $_POST[ "from" ]  : "";
+
+$gAction = $action;
 
 if( $action == "pledge" ) {
-	$url = "http://" . $_SERVER['SERVER_NAME'] . preg_replace( '/index.php/', 'pledge.html', $_SERVER['SCRIPT_NAME'] );
-	echo "<script type=\"text/javascript\">goToURL('$url');</script>";
+	include( "pledge.php" );
 	
 } elseif( $action == "pledge_now" ) {
-	$url = "http://" . $_SERVER['SERVER_NAME'] . preg_replace( '/index.php/', 'pledge_now.html', $_SERVER['SCRIPT_NAME'] );
-	echo "<script type=\"text/javascript\">goToURL('$url');</script>";
-	
+	include( "pledge_now.php" );
+
 } elseif( $action == "financial" ) {
-	$url = "http://" . $_SERVER['SERVER_NAME'] . preg_replace( '/index.php/', 'financial.html', $_SERVER['SCRIPT_NAME'] );
-	echo "<script type=\"text/javascript\">goToURL('$url');</script>";
+	include( "financial.php" );
 
 } elseif( $action == "spiritual" ) {
-	$url = "http://" . $_SERVER['SERVER_NAME'] . preg_replace( '/index.php/', 'spiritual.html', $_SERVER['SCRIPT_NAME'] );
-	echo "<script type=\"text/javascript\">goToURL('$url');</script>";
+	include( "spiritual.php" );
 
 } elseif( $action == "paynow" ) {
 	$keys = array_keys( $_POST );

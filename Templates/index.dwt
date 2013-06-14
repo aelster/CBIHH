@@ -1,5 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+global $gAction;
+global $gFrom;
+
+?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- TemplateBeginEditable name="doctitle" -->
@@ -15,30 +20,33 @@
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
 </head>
-
 <body>
 
 <div class="container">
+  <form action="index.php" method="post" id="form1">
+  <input type=hidden name=action id=action />
+  <input type=hidden name=fields id=fields />
   <div class="header">
   <img id=img1 src="../assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>
-  <img id=img2 src="../assets/Screen Shot 2013-06-09 at 2.11.33 AM.png" width="405" height="96" alt="HeaderName" />
+  <img id=img2 src="../assets/CBI_header_right.png" width="405" height="96" alt="HeaderName" />
   <ul id="MenuBar1" class="MenuBarHorizontal">
-      <li><a href="http://cbi18.org/">CBI Home</a>      </li>
-      <li><a href="../pledge.html">Pledge Home</a></li>
-      <li><a href="../financial.html">Financial Pledge</a></li>
-      <li><a href="../spiritual.html">Spiritual Pledge</a></li>
-      <li><a href="../pledges_to_date.html">Pledges To Date</a></li>
+      <li><a href="http://cbi18.org/">CBI Home</a></li>
+      <li><a onclick="addAction('pledge');">Pledge Home</a></li>
+      <li><a onclick="addAction('financial');">Financial Pledge</a></li>
+      <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+      <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
   </ul>
 <!-- end .header --></div>
   <!-- TemplateBeginEditable name="Content" -->
   <div class="content">
 Page content goes here
-    <!-- end .content -->
+    and here<!-- end .content -->
   </div>
   <!-- TemplateEndEditable -->
   <div class="footer">
-    <p><img src="../assets/Screen Shot 2013-05-30 at 11.06.35 PM.png" width="971" height="194" alt="Footer" /></p>
+    <p><img src="../assets/CBI_footer.png" width="971" height="194" alt="Footer" /></p>
     <!-- end .footer --></div>
+    </form>
   <!-- end .container --></div>
 <script type="text/javascript">
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
