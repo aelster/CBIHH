@@ -21,11 +21,12 @@ global $gFrom;
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 </head>
-<body>
+<body onload="firstName();">
 
 <div class="container">
   <form action="index.php" method="post" id="form1">
   <input type=hidden name=action id=action />
+  <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
   <div class="header">
   <img id=img1 src="assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>
@@ -42,7 +43,7 @@ global $gFrom;
   <h2>5774 High Holy Day Appeal </h2>
   <p>I pledge the following amount:</p>
   <div>
-  <input type=hidden name=from id=from value="Financial Pledge" />
+  <input type=hidden name=from id=from value="<?php echo $gAction ?>" />
   <table class=pledge>
     <tr><td><input type="radio" name="Pledges" value=18 onClick="makeActive('pledges');" />$18 (Chai)</td></tr>
     <tr><td><input type="radio" name="Pledges" value=36 onClick="makeActive('pledges');" />$36 (2 x Chai)</td></tr>
@@ -71,13 +72,13 @@ global $gFrom;
   <div>
     <table class=pledge_other>
     <tr>
-        <td><input type="radio" name="Pledges" value=other onClick="makeActive('pledges');" />Other: <input type=text name=other id=pledgeOther onkeyup="makeActive('pledges');" /></td>
+        <td><input type="radio" name="Pledges" value=other onClick="makeActive('pledges');" />Other: <input type=text name=PledgeOther id=pledgeOther onkeyup="makeActive('pledges');" /></td>
       </tr>
       </table>
 	</div>
   </form>
     <p>
-      <input type=button class=buttonNotOk id=pledgeNow onclick="addAction('pledge_now');" value="Pledge Now" disabled/>
+      <input type=button class=buttonNotOk id=pledgeNow onclick="setAmount();addAction('pledge_now');" value="Pledge Now" disabled/>
     </p>
   <!-- InstanceEndEditable -->
   <div class="footer">

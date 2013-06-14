@@ -20,11 +20,12 @@ global $gFrom;
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
 </head>
-<body>
+<body onload="firstName();">
 
 <div class="container">
   <form action="index.php" method="post" id="form1">
   <input type=hidden name=action id=action />
+  <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
   <div class="header">
   <img id=img1 src="../assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>

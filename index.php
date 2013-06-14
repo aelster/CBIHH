@@ -12,7 +12,7 @@ global $gAction;
 <body>
 <?php
 
-if(1) {
+if(0) {
 	$tmp = array_keys( $_POST );
 	sort( $tmp );
 	foreach( $tmp as $key ) {
@@ -39,6 +39,12 @@ if( $action == "pledge" ) {
 	include( "spiritual.php" );
 
 } elseif( $action == "paynow" ) {
+	include( "tbd.php" );
+	
+} elseif( $action == "pledges_to_date" ) {
+	include( "tbd.php" );
+	
+} elseif( $action == "mail" ) {
 	$keys = array_keys( $_POST );
 	sort( $keys );
 	foreach( $keys as $key ) {

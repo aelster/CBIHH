@@ -21,11 +21,12 @@ global $gFrom;
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 </head>
-<body>
+<body onload="firstName();">
 
 <div class="container">
   <form action="index.php" method="post" id="form1">
   <input type=hidden name=action id=action />
+  <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
   <div class="header">
   <img id=img1 src="assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>
@@ -44,6 +45,7 @@ global $gFrom;
   <p>I pledge that, during the coming year, I will fulfill the mitzvah/mitzvot which I am choosing below:</p>
     <div class=spirit>
         <div class=spiritLeft>
+  		<input type=hidden name=from id=from value="<?php echo $gAction ?>" />
 		<table class=spiritTable>
             <tr><th>Torah</th></tr>
             <tr><td><input type=checkbox name=spirit id=torah1 onClick="makeActive('spirit');"/>Learn to read Hebrew or increase my Hebrew skills</td></tr>
@@ -63,7 +65,7 @@ global $gFrom;
             <tr><th>Other</th></tr>
             <tr><td>
                 <input type=checkbox name=spirit id=other onClick="clearSpiritOther();makeActive('spirit');"/>
-        		<input type=text size=63 name=other_desc id=spiritOther onkeyup="makeActive('spirit');" value="Please enter description" />
+        		<input type=text size=55 name=other_desc id=spiritOther onkeyup="makeActive('spirit');" value="Check box and enter description" />
 			</td></tr>
 		</table>
         </div> <!-- end spiritLeft -->
@@ -85,8 +87,7 @@ global $gFrom;
     </div> <!-- end spirit -->
 	<div class=spiritBottom>
     <p>
-		<input type=hidden name=from id=from value="Spiritual Pledge" />
-      <input type=button class=buttonNotOk id=spiritNow onclick="addAction('pledge_now');" value="Pledge Now" />
+      <input type=button class=buttonNotOk id=spiritNow onclick="spiritFields();addAction('pledge_now');" value="Pledge Now" />
     </p>
     </div>
   </div> <!-- end content -->

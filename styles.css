@@ -38,6 +38,11 @@ hh_intro   {
 	margin-top: 10px;
 	margin-left: 10px;
 	margin-right: 10px;
+	vertical-align: top;
+}
+
+.content tr {
+	vertical-align: top;
 }
 
 .content-fltlft {
@@ -74,6 +79,7 @@ hh_intro   {
 
 .spiritRight {
 	width: 475px;
+	margin-bottom: 10px;
 }
 
 .spirit th {
@@ -87,6 +93,7 @@ hh_intro   {
 }
 
 .spiritTable {
+	font-weight: medium;
 	margin-left: 5px;
 	margin-bottom: 5px;
 	border-top-width: 1px;
@@ -105,5 +112,29 @@ hh_intro   {
 	clear: both;
 }
 #video {
+	text-align: center;
+}
+
+.spirit_detail {
+	margin-left: 200px;
+}
+
+.spirit_detail ul {
+	margin-left: 20px;
+}
+
+.left {
+	text-align: left;
+}
+
+#spiritOther {
+	font-size: medium;
+}
+
+#pledgeOther {
+	font-size: medium;
+}
+
+.pledge_center {
 	text-align: center;
 }

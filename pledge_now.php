@@ -21,11 +21,12 @@ global $gFrom;
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 </head>
-<body>
+<body onload="firstName();">
 
 <div class="container">
   <form action="index.php" method="post" id="form1">
   <input type=hidden name=action id=action />
+  <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
   <div class="header">
   <img id=img1 src="assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>
@@ -39,26 +40,53 @@ global $gFrom;
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
+  <?php
+  if( $gFrom == "financial" ) {
+	  $tag = "Financial Pledge";
+  } else if( $gFrom == "spiritual" ) {
+	  $tag = "Spiritual Pledge";
+  }
+  ?>
   <div class="content">
-  <h2>5774 High Holy Day Appeal - <?php echo $gFrom ?></h2>
+  <h2>5774 High Holy Day Appeal<br /><?php echo $tag ?></h2>
+  <?php
+  if( $gFrom == "financial" ) {
+	  printf( "<p>Thank you for your generous pledge of \$ %.2f.</p>", number_format($_POST['amount'], 2 ) );
+  } else if( $gFrom == 'spiritual' ) {
+	  echo "<div class=spirit_detail>";
+	  printf( "Thank you for your pledge to:<br>" );
+	  $items = preg_split( '/\|/', $_POST['fields'] );
+	  echo "<ul>";
+	  foreach( $items as $desc ) {
+		  echo "<li>$desc</li>";
+	  }
+	  echo "</ul>";
+	  echo "</div><br>";
+  }
+  ?>
       <table>
         <tr>
-          <td>First Name</td>
+          <td>*&nbsp;First Name</td>
           <td><input type="text" name="paynow" id="firstName" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
-          <td width="130">Last Name</td>
+          <td width="130">*&nbsp;Last Name</td>
           <td width="442"><input type="text" name="paynow" id="lastName" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
-          <td>Phone #</td>
+          <td>*&nbsp;Phone #</td>
           <td><input type="text" name="paynow" id="phone" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
-          <td>E-mail Address</td>
+          <td>*&nbsp;E-mail Address</td>
           <td><input type="text" name="paynow" id="email" oninput="makeActive('paynow');" size=60 /></td>
         </tr>
-      </table>
+<?php
+if( $gFrom == 'financial' ) {
+		  echo <<<END
+  <tr>
+	<td>*&nbsp;Payment (select one)</td>
+	<td>
       <table width="600">
         <tr>
           <td><label>
@@ -76,10 +104,18 @@ global $gFrom;
             Contact me about payment</label></td>
         </tr>
       </table>
+	</td>
+  </tr>
+END;
+}
+?>
+	</table>
       <h2>
-      <input type=button onclick="payNow();addAction('paynow');" class=pledgeBtn id=paynow value=Submit />
+      <input type=button onclick="payNow();addAction('paynow');" class=pledgeBtn id=paynow value=Submit disabled/>
       </h2>
+      <p class="left"><em class=left>*</em>&nbsp;Required fields</p>
   </div>
+
   <!-- InstanceEndEditable -->
   <div class="footer">
     <p><img src="assets/CBI_footer.png" width="971" height="194" alt="Footer" /></p>

@@ -11,6 +11,11 @@ function clearSpiritOther() {
 	e.focus();
 }
 
+function firstName() {
+	var e = document.getElementById('firstName');
+	if(e) e.focus();
+}
+
 function goToURL(page) {
 	window.location.href = page;
 }
@@ -93,7 +98,40 @@ function payNow() {
 	var e;
 	for( var i=0; i<keys.length; i++ ) {
 		e = document.getElementById(keys[i]);
-		items[i] = keys[i] + '=' + e.value;
+		items.push( keys[i] + '=' + e.value );
+	}
+	e = document.getElementById('fields');
+	e.value = items.join('|');
+}
+
+function setAmount() {
+	var e = document.getElementsByName('Pledges');
+	for( var i=0; i<e.length; i++ ) {
+		if( e[i].checked ) {
+			if( e[i].value == 'other' ) {
+				var x = document.getElementById('pledgeOther').value;
+			} else {
+				var x = e[i].value;
+			}
+		}
+	}
+	e = document.getElementById('amount');
+	e.value = x;
+}
+
+function spiritFields() {
+	var items = new Array();
+	var e = document.getElementsByName('spirit');
+	for( var i=0; i<e.length; i++ ) {
+		if( e[i].type == 'checkbox' && e[i].checked ) {
+			var f = e[i].parentNode;
+			for( var j=0; j<f.childNodes.length; j++ ) {
+			var g = f.childNodes[j];
+				if( f.childNodes[j].nodeType == 3 ) {  // TEXT_NODE
+					items.push( f.childNodes[j].nodeValue );
+				}
+			}
+		}
 	}
 	e = document.getElementById('fields');
 	e.value = items.join('|');
