@@ -1,7 +1,16 @@
 <?php
 require_once 'lib/swift_required.php';
 
-global $gAction;
+include( 'globals.php' );
+include( 'library.php' );
+include( 'local_cbi.php' );
+
+require_once( 'SiteLoader.php' );
+SiteLoad( 'CommonV2' );
+
+$gDb = OpenDb();                # Open the MySQL database
+
+LocalInit();
 
 ?>
 <html>
@@ -46,7 +55,8 @@ if( $action == "pledge" ) {
 	include( "spiritual.php" );
 
 } elseif( $action == "paynow" ) {
-	include( "tbd.php" );
+	include( "store_pledge.php" );
+	include( "pledge.php" );
 	
 } elseif( $action == "pledges_to_date" ) {
 	include( "pledges_to_date.php" );

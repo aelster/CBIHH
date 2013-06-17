@@ -1,20 +1,5 @@
-<?php
-global $gAction;
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/index.dwt" codeOutsideHTMLIsLocked="false" -->
-<?php
-require_once( 'SiteLoader.php' );
-
-SiteLoad( 'CommonV2' );
-
-include( 'local_cbi.php' );
-//$gDb = OpenDb();                # Open the MySQL database
-
-global $gAction;
-global $gFrom;
-
-?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
@@ -47,31 +32,27 @@ global $gFrom;
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
+  <input type=hidden name=from id=from value=financial />
   <h2>5774 High Holy Day Appeal </h2>
   <p>I pledge the following amount:</p>
   <div>
-  <input type=hidden name=from id=from value="<?php echo $gAction ?>" />
-  <table class=pledge>
-    <tr><td><input type="radio" name="Pledges" value=18 onClick="makeActive('pledges');" />$18 (Chai)</td></tr>
-    <tr><td><input type="radio" name="Pledges" value=36 onClick="makeActive('pledges');" />$36 (2 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=54 onClick="makeActive('pledges');" />$54 (3 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=72 onClick="makeActive('pledges');" />$72 (4 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=90 onClick="makeActive('pledges');" />$90 (5 x Chai)</td></tr>	
-  </table>
-  <table class=pledge>
-    <tr><td><input type="radio" name="Pledges" value=180 onClick="makeActive('pledges');" />$180 (10 x Chai)</td></tr>
-    <tr><td><input type="radio" name="Pledges" value=270 onClick="makeActive('pledges');" />$270 (15 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=360 onClick="makeActive('pledges');" />$360 (20 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=540 onClick="makeActive('pledges');" />$540 (30 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=1080 onClick="makeActive('pledges');" />$1080 (60 x Chai)</td></tr>	
-  </table>
-  <table class=pledge>
-    <tr><td><input type="radio" name="Pledges" value=1800 onClick="makeActive('pledges');" />$1800 (100 x Chai)</td></tr>
-    <tr><td><input type="radio" name="Pledges" value=3600 onClick="makeActive('pledges');" />$3600 (200 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=5400 onClick="makeActive('pledges');" />$5400 (300 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=7200 onClick="makeActive('pledges');" />$7200 (400 x Chai)</td></tr>
-	<tr><td><input type="radio" name="Pledges" value=9000 onClick="makeActive('pledges');" />$9000 (500 x Chai)</td></tr>	
-  </table>
+  <?php
+  DoQuery( "select multiplier from financial order by multiplier asc" );
+  $num_per_row = $gNumRows / 3;
+  $i = 0;
+  while( list( $mult ) = mysql_fetch_array( $result ) ) {
+	  if( $i % $num_per_row == 0 ) {
+		  echo "<table class=pledge>\n";
+	  }
+	  $amount = $mult * 18;
+	  printf( "<tr><td><input type=radio name=Pledges value=%d onClick=\"makeActive('pledges');\">\$%s (%d x Chai)</td></tr>\n",
+	  	$amount, number_format($amount,0), $mult );
+	  $i++;
+	  if( $i % $num_per_row == 0 ) {
+		  echo "</table>\n";
+	  }
+  }
+  ?>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>

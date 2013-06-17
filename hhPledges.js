@@ -103,6 +103,17 @@ function payNow() {
 		e = document.getElementById(keys[i]);
 		items.push( keys[i] + '=' + e.value );
 	}
+	if( gFrom == 'financial' ) {
+		items.push( 'amount=' + pledge_amount );
+	} else {
+		if( pledgeIds.length ) {
+			var str = pledgeIds.join(',');
+			items.push( 'pledgeIds=' + str );
+		}
+		if( pledgeOther ) {
+			items.push( 'pledgeOther=' + pledgeOther );
+		}
+	}
 	e = document.getElementById('fields');
 	e.value = items.join('|');
 }
@@ -122,6 +133,14 @@ function setAmount() {
 	e.value = x;
 }
 
+function setValue( id, value ) {
+	var e = document.getElementById(id);
+	if( ! e ) {
+		alert( 'Can\'t find element: ' + id + ' to set value to ' + value );
+		exit(1);
+	}
+}
+
 function spiritFields() {
 	var items = new Array();
 	var e = document.getElementsByName('spirit');
@@ -131,6 +150,8 @@ function spiritFields() {
 				var f = document.getElementById('spiritOther');
 				items.push( f.value );
 			} else {
+				items.push( e[i].id );
+/*
 				var f = e[i].parentNode;
 				for( var j=0; j<f.childNodes.length; j++ ) {
 				var g = f.childNodes[j];
@@ -138,6 +159,7 @@ function spiritFields() {
 						items.push( f.childNodes[j].nodeValue );
 					}
 				}
+*/
 			}
 		}
 	}

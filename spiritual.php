@@ -1,20 +1,5 @@
-<?php
-global $gAction;
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/index.dwt" codeOutsideHTMLIsLocked="false" -->
-<?php
-require_once( 'SiteLoader.php' );
-
-SiteLoad( 'CommonV2' );
-
-include( 'local_cbi.php' );
-//$gDb = OpenDb();                # Open the MySQL database
-
-global $gAction;
-global $gFrom;
-
-?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
@@ -47,27 +32,29 @@ global $gFrom;
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
+  <input type=hidden name=from id=from value=spiritual />
   <div class="content">
   <h2>5774 High Holy Day Appeal </h2>
   <p>I pledge that, during the coming year, I will fulfill the mitzvah/mitzvot which I am choosing below:</p>
     <div class=spirit>
         <div class=spiritLeft>
-  		<input type=hidden name=from id=from value="<?php echo $gAction ?>" />
-		<table class=spiritTable>
-            <tr><th>Torah</th></tr>
-            <tr><td><input type=checkbox name=spirit id=torah1 onClick="makeActive('spirit');"/>Learn to read Hebrew or increase my Hebrew skills</td></tr>
-            <tr><td><input type=checkbox name=spirit id=torah2 onClick="makeActive('spirit');"/>Learn to put on a tallit or tefillin</td></tr>
-            <tr><td><input type=checkbox name=spirit id=torah3 onClick="makeActive('spirit');"/>Attend Adult Education classes</td></tr>
-            <tr><td><input type=checkbox name=spirit id=torah4 onClick="makeActive('spirit');"/>Celebrate an Adult Bar/Bat Mitzvah</td></tr>
-        </table>
-        <table class="spiritTable" >
-            <tr><th>Avodah</th></tr>
-            <tr><td><input type=checkbox name=spirit id=avodah1 onClick="makeActive('spirit');"/>Chant Torah/Haftorah</td></tr>
-            <tr><td><input type=checkbox name=spirit id=avodah2 onClick="makeActive('spirit');"/>Attend Sunday and/or Wednesday morning Minyan</td></tr>
-            <tr><td><input type=checkbox name=spirit id=avodah3 onClick="makeActive('spirit');"/>Learn to lead services</td></tr>
-            <tr><td><input type=checkbox name=spirit id=avodah4 onClick="makeActive('spirit');"/>Attend Shabbat Services</td></tr>
-            <tr><td><input type=checkbox name=spirit id=avodah5 onClick="makeActive('spirit');"/>Incorporate meditation into my day</td></tr>
-        </table>
+        <?php
+echo "<table class=spiritTable>";
+echo "<tr><th>Torah</th></tr>";
+DoQuery( "select id, description from spiritual where spiritualType = $SpiritualTorah" );
+while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+}
+echo "</table>";
+
+echo "<table class=spiritTable>";
+echo "<tr><th>Avodah</th></tr>";
+DoQuery( "select id, description from spiritual where spiritualType = $SpiritualAvodah" );
+while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+}
+echo "</table>";
+			?>
       	<table class="spiritTable">
             <tr><th>Other</th></tr>
             <tr><td>
@@ -77,19 +64,15 @@ global $gFrom;
 		</table>
         </div> <!-- end spiritLeft -->
     	<div class=spiritRight>
-      	<table class="spiritTable">
-            <tr><th>Gemilut Chasadim</th></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut1 onClick="makeActive('spirit');"/>Prepare food for the Family Promise program</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut2 onClick="makeActive('spirit');"/>Attend a Shivah Minyan</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut3 onClick="makeActive('spirit');"/>Join the Chessed committee</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut4 onClick="makeActive('spirit');"/>Visit the elderly or ill</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut5 onClick="makeActive('spirit');"/>Become an usher at Shabbat Services</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut6 onClick="makeActive('spirit');"/>Invite guests for Shabbat Dinner</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut7 onClick="makeActive('spirit');"/>Become a Buddy for a new family</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut8 onClick="makeActive('spirit');"/>Volunteer at Sunday supper</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut9 onClick="makeActive('spirit');"/>Donate blood</td></tr>
-            <tr><td><input type=checkbox name=spirit id=gemilut10 onClick="makeActive('spirit');"/>Volunteer in the CBI office</td></tr>
-        </table>
+<?php
+echo "<table class=spiritTable>";
+echo "<tr><th>Gemilut Chasadim</th></tr>";
+DoQuery( "select id, description from spiritual where spiritualType = $SpiritualGemilut" );
+while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+}
+echo "</table>";
+?>
 		</div> <!-- end spiritRight -->
     </div> <!-- end spirit -->
 	<div class=spiritBottom>
