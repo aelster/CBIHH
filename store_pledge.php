@@ -33,7 +33,6 @@ if( $gFrom == 'financial' ) {
 
 
 $query = "insert into pledges set " . join( ',', $args );
-echo "query: [$query]<br>";
 DoQuery( $query );
 
 ?>

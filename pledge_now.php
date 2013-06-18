@@ -59,7 +59,7 @@
 	  echo "<div class=spirit_detail>";
 	  printf( "Thank you for your pledge to:<br>" );
 	  $items = preg_split( '/\|/', $_POST['fields'] );
-	  echo "<ul>";
+	  echo "<ul>\n";
 	  foreach( $items as $item ) {
 		  if( preg_match( '/^spirit_/', $item ) ) {
 			  list( $na, $id ) = preg_split( '/_/', $item );
@@ -69,7 +69,7 @@
 			  $desc = CleanString( $_POST['other_desc'] );
 			  printf( "<script type='text/javascript'>pledgeOther = '%s';</script>\n", $desc );
 		  }
-		  echo "<li>$desc</li>";
+		  echo "<li>$desc</li>\n";
 	  }
 	  echo "</ul>";
 	  echo "</div><br>";

@@ -4,7 +4,7 @@ function CleanString ($data) {
 	$data = trim($data);
 	$data = addslashes($data);
 	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
+	$data = htmlspecialchars($data, ENT_QUOTES );
 	return $data;
 }
 

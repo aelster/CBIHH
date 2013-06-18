@@ -23,9 +23,11 @@ $PaymentCall = 3;
 #=====================================================
 global $PledgeTypeFinancial;
 global $PledgeTypeSpiritual;
+global $PledgeTypeFinGoal;
 
 $PledgeTypeFinancial = 1;
 $PledgeTypeSpiritual = 2;
+$PledgeTypeFinGoal = 3;
 
 #=====================================================
 global $SpiritualTorah;

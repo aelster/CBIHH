@@ -35,24 +35,15 @@
   <div class="content">
     <p class="content"><br />
         <br />
-      The High Holy Days begin early this year, and CBI is kicking off our annual appeal. I am instituting an online pledge opportunity for the first time!  If successful, I will present the “State of the Congregation”, but not make an appeal, during Kol Nidre services.  I ask you to make both financial and spiritual pledges as we renew ourselves in the New Year.</p>
-      <p class="content">Please click below to view the 3-minute video 5774 High Holiday Appeal.</p>
-      <p class="content">My wish is that each of us will contribute financially as generously as we can, and spiritually in a way that is personally meaningful. I am hoping to stand before our congregation during the High Holy Days and be able to say that 100% of our incredible community contributed and participated. Every pledge matters and makes a difference. Please contact the CBI office with any questions. Thank you for your support.  I wish you all a year of health, happiness, prosperity and growth.</p>
-	<p class="content-fltlft" >
-      L'Shana Tova,<br />
-      Beth Elster<br />
-      CBI President
-      </p>      
-      <p>
-        <embed src="assets/HH Pledge Intro.mp4" width="240" class="fltrt" id=video height="189" autostart="false"></embed>
-      </p>
+      Thank you for your pledge.  You should receive an e-mail confirmation  shortly.
+    </p>
     <div style="clear:both;">
       <p>
         <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('pledges_to_date');" value="Pledges to Date" />
       </p>
-  </div>
+</div>
     <!-- end .content -->
   </div>
   <!-- InstanceEndEditable -->

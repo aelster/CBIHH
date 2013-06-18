@@ -56,7 +56,7 @@ if( $action == "pledge" ) {
 
 } elseif( $action == "paynow" ) {
 	include( "store_pledge.php" );
-	include( "pledge.php" );
+	include( "thank_you.php" );
 	
 } elseif( $action == "pledges_to_date" ) {
 	include( "pledges_to_date.php" );

@@ -108,6 +108,33 @@ hh_intro   {
 	border-bottom-style: solid;
 }
 
+.spiritTable tr.spacer {
+	line-height: 3px;
+}
+
+.spiritTable td.box {
+	font-weight: bold;
+	text-align: center;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-left-width: thin;
+	border-bottom-width: thin;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	background-color: #AAAE8A;
+	margin-left: 20px;
+}
+
+.spiritTable td.col_left {
+	width: 100px;
+}
+
+.spiritTable td.col_right {
+	width: 120px;
+}
+
 .spiritBottom {
 	clear: both;
 }
