@@ -56,32 +56,12 @@ if( $action == "pledge" ) {
 
 } elseif( $action == "paynow" ) {
 	include( "store_pledge.php" );
+	include( "send_confirmation.php" );
 	include( "thank_you.php" );
 	
 } elseif( $action == "pledges_to_date" ) {
 	include( "pledges_to_date.php" );
 	
-} elseif( $action == "mail" ) {
-	$keys = array_keys( $_POST );
-	sort( $keys );
-	foreach( $keys as $key ) {
-//		printf( "_POST[%s] = %s<br>", $key, $_POST[$key] );
-	}
-	$tmp = preg_split( '/\|/', $_POST['fields'] );
-	foreach( $tmp as $xx ) {
-		list( $key, $val ) = preg_split( '/=/', $xx );
-		$$key = $val;
-	}
-	$pmt_type = $_POST['paynow'];
-	$message = Swift_Message::newInstance()
-	->setSubject('CBI Financial Pledge Confirmation' )
-	->setFrom(array('cbi18@cbi18.org' => 'CBI'))
-	->setTo(array( $email => "$firstName $lastName" ) )
-	->setCC(array( 'beth@elsternet.com' => 'The Pres' ) )
-	;
-	$url = "http://" . $_SERVER['SERVER_NAME'] . preg_replace( '/index.php/', 'pledge.html', $_SERVER['SCRIPT_NAME'] );
-	echo "<script type=\"text/javascript\">goToURL('$url');</script>";
-
 } else {
 	echo "uh-oh, not sure what to do with action: [$action]<br>";
 }

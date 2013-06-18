@@ -44,15 +44,16 @@
       CBI President
       </p>      
       <p>
-        <embed src="assets/HH Pledge Intro.mp4" width="240" class="fltrt" id=video height="189" autostart="false"></embed>
+        <embed src="assets/HH Pledge Intro.mp4" width="240" class="fltrt" id=video height="192" autostart="false"></embed>
       </p>
     <div style="clear:both;">
+      <p>&nbsp;</p>
       <p>
         <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('pledges_to_date');" value="Pledges to Date" />
       </p>
-  </div>
+    </div>
     <!-- end .content -->
   </div>
   <!-- InstanceEndEditable -->
