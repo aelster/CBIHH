@@ -33,7 +33,7 @@
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
   <div class="content">
-    <p class="content"><br />
+    <p class="pledge_center"><br />
         <br />
       Thank you for your pledge.  You should receive an e-mail confirmation  shortly.
     </p>
