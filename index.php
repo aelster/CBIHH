@@ -22,13 +22,7 @@ LocalInit();
 <body>
 <?php
 
-$debug = 0;
-$x = isset( $_REQUEST['bozo'] ) ? 1 : 0;
-if( $x ) {
-	$debug = $x;
-}
-
-if( $debug ) {
+if( $gDebug ) {
 	$tmp = array_keys( $_POST );
 	sort( $tmp );
 	foreach( $tmp as $key ) {

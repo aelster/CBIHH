@@ -1,13 +1,21 @@
 <?php
 
+global $gAccessLevel;
 global $gAction;
+global $gActive;
 global $gDb;
 global $gDebug;
+global $gEnabled;
 global $gFrom;
 global $gFunction;
+global $gMailLive;
 global $gNumRows;
+global $gSourceCode;
 global $gSpiritIDtoDesc;
 global $gTrace;
+global $gUserId;
+
+global $PasswdChanged;
 global $result;
 
 $gFunction = array('index.php');
