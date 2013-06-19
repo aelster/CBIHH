@@ -33,6 +33,7 @@ function DisplayMain() {
 		if( UserManager( 'authorized', 'control' ) ) {
 			echo "<input type=button onclick=\"setValue('func','users');addAction('Main');\" value=Users>";
 			echo "<input type=button onclick=\"setValue('func','privileges');addAction('Main');\" value=Privileges>";
+			echo "<input type=button onclick=\"setValue('func','goal');addAction('Main');\" value=Goal>";
 			echo "<br>";
 		}
 		echo "<input type=button onclick=\"setValue('func','financial');addAction('Main');\" value=Financial>";
@@ -45,11 +46,34 @@ function DisplayMain() {
 	} elseif( $func == 'privileges' ) {
 		UserManager( 'privileges' );
 	
+	} elseif( $func == 'goal' ) {
+		echo "<div class=CommonV2>";
+		echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+		echo "<input type=button value=Update onclick=\"setValue('from','$func');addAction('Update');\">";
+		echo "<p>Financial goal:&nbsp;&nbsp;";
+		DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
+		list( $goal ) = mysql_fetch_array( $result );
+		$tag = MakeTag( 'goal' );
+		printf( "<input type=text $tag size=20 value=\"\$ %s\">", number_format( $goal, 0 ) );
+		echo "</p>";
+		echo "</div>";
+		
 	} elseif( $func == 'financial' ) {
 		echo "<div class=CommonV2>";
 		echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+		
+		DoQuery( "select sum(amount) from pledges where pledgeType = $PledgeTypeFinancial" );
+		list( $total ) = mysql_fetch_array( $result );
+		
+		DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
+		list( $goal ) = mysql_fetch_array( $result );
+		
 		DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
-		echo "<ul><li>The columns are sortable by clicking on their header</li></ul>";
+		echo "<ul>";
+		echo "<li>The columns are sortable by clicking on their header</li>";
+		$x = $total * 100.0 / $goal;
+		printf( "<li>Total pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
+		echo "</ul>";
 		echo "<table class=sortable>";
 		echo "<tr>";
 		echo "  <th>#</th>";
@@ -83,16 +107,19 @@ function DisplayMain() {
 		DoQuery( "select * from pledges where pledgeType = $PledgeTypeSpiritual" );
 		$hist = array();
 		$other = array();
+		$people = array();
  		
 		foreach( $gSpiritIDtoDesc as $id => $desc ) {
 			$hist[$id] = 0;
 		}
 		
 		while( $rec = mysql_fetch_assoc( $result ) ) {
+			$str = FormatPhone( $rec['phone'] );
 			$tmp = preg_split( '/,/', $rec['pledgeIds'] );
 			if( count( $tmp ) ) {
 				foreach( $tmp as $id ) {
 					$hist[$id]++;
+					$people[$id][] = sprintf( "%s, %s: %s", $rec['lastName'], $rec['firstName'], $str );
 				}
 			}
 			if( ! empty( $rec['pledgeOther'] ) ) {
@@ -100,6 +127,7 @@ function DisplayMain() {
 				if( empty( $other[ $desc ] ) ) {
 					$other[$desc] = 0;
 					$other[$desc]++;
+					$people[$desc][] = sprintf( "%s, %s: %s",  $rec['lastName'], $rec['firstName'], $str );
 				}
 			}
 		}
@@ -117,13 +145,33 @@ function DisplayMain() {
 			if( empty( $count ) ) continue;
 			echo "<tr>";
 			printf( "<td>%s</td>", $gSpiritIDtoDesc[$id] );
-			printf( "<td class=c>%d</td>", number_format($count,0) );
+			echo "<td class=c>";
+			$tag = number_format($count,0);
+			$str = join( '<br>', $people[$id] );
+			$cap = 'caption';
+			echo <<<END
+<a href="javascript:void(0);"
+onmouseover="return overlib('$str', WIDTH, 300, CAPTION, '$cap')"
+onmouseout="return nd();">$tag
+</a>
+END;
+			echo "</td>";
 			echo "</tr>";
 		}
 		foreach( $other as $desc => $count ) {
 			echo "<tr>";
 			printf( "<td>%s (other)</td>", $desc );
-			printf( "<td class=c>%d</td>", $count );
+			echo "<td class=c>";
+			$tag = number_format($count,0);
+			$str = $people[$desc][0];
+			$cap = 'caption';
+			echo <<<END
+<a href="javascript:void(0);"
+onmouseover="return overlib('$str', WIDTH, 300, CAPTION, '$cap')"
+onmouseout="return nd();">$tag
+</a>
+END;
+			echo "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
@@ -162,12 +210,15 @@ function WriteHeader() {
 	
 	$styles = array();
 	$styles[] = "/css/CommonV2.css";
+	$styles[] = "styles.css";
 	
 	foreach( $styles as $style ) {
 		printf( "<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />", $style );
 	}
 
 	$scripts = array();
+	$scripts[] = "/scripts/overlib/overlib.js";
+	$scripts[] = "/scripts/overlib/overlib_hideform.js";
 	$scripts[] = "/scripts/commonv2.js";
 	$scripts[] = "/scripts/sha256.js";
 	$scripts[] = "/scripts/sorttable.js";
@@ -177,5 +228,9 @@ function WriteHeader() {
 	}
 	echo "</head>";
 	echo "<body>";
+	AddOverlib();
+	echo "<div class=adminBody>";
+	echo "<img src=\"assets/CBI_ner_tamid.png\">";
+	echo "<h2>5774 High Holy Day Appeal</h2>";
 }
 ?>

@@ -80,6 +80,17 @@ switch( $gAction ) {
          $gAction = "Main";
          $func = 'users';
 
+	  } elseif( $gFrom == 'goal' ) {
+		  $goal = preg_replace( '/[^0-9]/', '', $_POST['goal'] );
+		  DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinGoal" );
+		  if( $gNumRows ) {
+			  DoQuery( "update pledges set amount = $goal where pledgeType = $PledgeTypeFinGoal" );
+		  } else {
+			  DoQuery( "insert into pledges set pledgeType = $PledgeTypeFinGoal, amount = $goal" );
+		  }
+		  $gAction = "Main";
+		  $func = 'goal';
+		  
       } else {
          UserManager( 'update' );
          $gAction = 'Welcome';
