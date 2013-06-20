@@ -100,6 +100,45 @@ function DisplayFinancial() {
 	if( $gTrace ) array_pop( $gFunction );
 }
 
+function DisplayGoal() {
+	include( 'globals.php' );
+	if( $gTrace ) {
+		$gFunction[] = "DisplayGoal()";
+		Logger();
+	}
+	
+	$area = $_POST['area'];
+	$func = $_POST['func'];
+	
+	echo "<div class=CommonV2>";
+	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+
+	$tag = MakeTag('update');
+	$jsx = array();
+	$jsx[] = "setValue('area','$area')";
+	$jsx[] = "setValue('from','DisplayGoal')";
+	$jsx[] = "setValue('func','update')";
+	$jsx[] = "addAction('Update')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button value=Update $tag $js>";
+
+	echo "<p>Financial goal:&nbsp;&nbsp;";
+	DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
+	list( $goal ) = mysql_fetch_array( $result );
+	$tag = MakeTag( 'goal' );
+	$jsx = array();
+	$jsx[] = "setValue('area','$area')";
+	$jsx[] = "setValue('from','DisplayGoal')";
+	$jsx[] = "addField('goal')";
+	$jsx[] = "toggleBgRed('update')";
+	$js = sprintf( "onKeyDown=\"%s\"", join(';',$jsx) );
+	printf( "<input type=text $tag $js id=goal size=20 value=\"\$ %s\">", number_format( $goal, 0 ) );
+	echo "</p>";
+	echo "</div>";
+
+	if( $gTrace ) array_pop( $gFunction );
+}
+
 function DisplayMain() {
 	include( 'globals.php' );
 	if( $gTrace ) {
@@ -116,23 +155,14 @@ function DisplayMain() {
 	} elseif( $area == 'spiritual' ) {
 		DisplaySpiritual();
 		
+	} elseif( $area == 'goal' ) {
+		DisplayGoal();
+	
 	} elseif( $func == 'users' ) {
 		UserManager( 'control' );
 		
 	} elseif( $func == 'privileges' ) {
 		UserManager( 'privileges' );
-	
-	} elseif( $func == 'goal' ) {
-		echo "<div class=CommonV2>";
-		echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
-		echo "<input type=button value=Update onclick=\"setValue('from','$func');addAction('Update');\">";
-		echo "<p>Financial goal:&nbsp;&nbsp;";
-		DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
-		list( $goal ) = mysql_fetch_array( $result );
-		$tag = MakeTag( 'goal' );
-		printf( "<input type=text $tag size=20 value=\"\$ %s\">", number_format( $goal, 0 ) );
-		echo "</p>";
-		echo "</div>";
 		
 	} else {
 		if( UserManager( 'authorized', 'admin' ) ) {
@@ -140,7 +170,41 @@ function DisplayMain() {
 			echo "<h3>Admin features</h3>";
 			echo "<input type=button onclick=\"setValue('func','users');addAction('Main');\" value=Users>";
 			echo "<input type=button onclick=\"setValue('func','privileges');addAction('Main');\" value=Privileges>";
-			echo "<input type=button onclick=\"setValue('func','goal');addAction('Main');\" value=Goal>";
+
+			$jsx = array();
+			$jsx[] = "setValue('area','goal')";
+			$jsx[] = "addAction('Main')";
+			$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+			echo "<input type=button $js value=Goal>";
+
+			$jsx = array();
+			$jsx[] = "setValue('area','reset')";
+			$jsx[] = "setValue('from','DisplayMain')";
+			$jsx[] = "myConfirm('Are you sure you want to delete all pledges?')";
+			$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+			echo "<input type=button $js value='Reset Pledges'>";
+
+			DoQuery( "select sum(amount) from pledges where pledgeType = $PledgeTypeFinancial" );
+			list( $total ) = mysql_fetch_array( $result );
+			
+			DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
+			list( $goal ) = mysql_fetch_array( $result );
+			
+			DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
+			echo "<ul>";
+			$x = $total * 100.0 / $goal;
+			printf( "<li>Total financial pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
+		
+			DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
+			$num_pledges = $gNumRows;
+			$num_spirit = 0;
+			while( list( $ids, $other ) = mysql_fetch_array( $result ) ) {
+				$num_spirit += count( preg_split( '/,/', $ids ) );
+				if( ! empty( $other ) ) $num_spirit++;
+			}
+			printf( "<li>Total spiritual pledegs: %d ( %d mitzvot )</li>", $num_pledges, $num_spirit );
+			echo "</ul>";
+
 			echo "</div>";
 			echo "<br>";
 		}
@@ -251,6 +315,24 @@ END;
 	if( $gTrace ) array_pop( $gFunction );
 }
 
+function GoalUpdate() {
+	include( 'globals.php' );
+	if( $gTrace ) {
+		$gFunction[] = "GoalUpdate()";
+		Logger();
+	}
+	
+	$goal = preg_replace( '/[^0-9]/', '', $_POST['goal'] );
+	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinGoal" );
+	if( $gNumRows ) {
+		DoQuery( "update pledges set amount = $goal where pledgeType = $PledgeTypeFinGoal" );
+	} else {
+		DoQuery( "insert into pledges set pledgeType = $PledgeTypeFinGoal, amount = $goal" );
+	}
+	
+	if( $gTrace ) array_pop( $gFunction );	
+}
+
 function LocalInit() {
 	include( 'globals.php' );
 	
@@ -324,7 +406,12 @@ function PledgeEdit() {
 		$jsx[] = "addField('amount')";
 		$jsx[] = "toggleBgRed('update')";
 		$js = sprintf( "onKeyDown=\"%s\"", join(';',$jsx) );
-		printf( "<tr><td>Amount</td><td>\$ %s</td></tr>", number_format( $rec['amount'], 2 ) );
+		echo "<tr>";
+		echo "<td>Amount</td>";
+		printf( "<td><input type=text size=50 name=amount value=\"\$ %s\" $js></td>",
+				number_format( $rec['amount'], 2 ) );
+		echo "</tr>";
+		
 		echo "<tr>";
 		echo "<td>Payment Method</td>";
 		$tag = MakeTag( 'paymentMethod');
@@ -409,10 +496,17 @@ function PledgeUpdate() {
 		$keys = array_unique( $tmp );
 		$qx = array();
 		foreach( $keys as $key ) {
-			$qx[] = sprintf( "`%s` = '%s'", $key, CleanString($_POST[$key]) );
+			$val = CleanString($_POST[$key]);
+			if( $key == 'phone' ) {
+				$val = preg_replace("/[^0-9]/", "", $val );
+			} elseif( $key == 'amount' ) {
+				$val = preg_replace( "/[\$,]/", "", $val );
+			}
+			$qx[] = sprintf( "`%s` = '%s'", $key, $val );
 		}
 		$query = sprintf( "update pledges set %s where id = $id", join( ',', $qx ) );
 		DoQuery( $query );
+		
 	} elseif( $func == 'delete' ) {
 		$query = sprintf( "delete from pledges where id = $id" );
 		DoQuery( $query );
@@ -478,6 +572,9 @@ function SendConfirmation() {
 		$html[] = "</ul>";
 	}
 	
+	$html[] = "<br><br>";
+	$html[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
+	
 	$text[] = "Dear $firstName $lastName,\n";
 	if( $post['from'] == 'financial' ) {
 		$text[] = "  Thank you for your pledge of \$ " . number_format( $amount, 2 ) . ".";
@@ -511,9 +608,12 @@ function SendConfirmation() {
 		}
 		$text[] = "\n";
 	}
+
+	$text[] = "\n";
+	$text[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
 	
 	$message
-	->setFrom(array('support@elsternet.com' => 'Andy Elster'))
+	->setFrom(array('support@elsternet.com' => 'CBI'))
 	->setTo(array( $email => "$firstName $lastName" ) )
 	->setBcc(array( 'beth@elsternet.com' => 'Beth Elster' ) )
 	->setBody( join('',$html), 'text/html' )

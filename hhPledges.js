@@ -16,6 +16,36 @@ function firstName() {
 	if(e) e.focus();
 }
 
+function formatPhone(num) {
+	var i;
+	var str = '';
+	if ( num.length == 7 ) {
+		for ( i=0; i < 3; i++ ) {
+			str += num.charAt(i);
+		}
+		str += '-';
+		for ( i=3; i<7; i++ ) {
+			str += num.charAt(i);
+		}
+
+	} else if ( num.length == 10 ) {
+		str += '(';
+		for ( i=0; i < 3; i++ ) {
+			str += num.charAt(i);
+		}
+		str += ') ';
+		for ( i=3; i < 6; i++ ) {
+			str += num.charAt(i);
+		}
+		str += '-';
+		for ( i=6; i<10; i++ ) {
+			str += num.charAt(i);
+		}
+	
+	}
+	return str;
+}
+
 function goToURL(page) {
 	window.location.href = page;
 }
@@ -74,7 +104,13 @@ function makeActive(area) {
 		var radio = 0;
 		for( var i=0; i<e.length; i++ ) {
 			if( e[i].type == 'text' ) {
-				if( e[i].value !== '' ) num_filled++;
+				if ( e[i].id == 'phone' ) {
+					num_filled += validatePhone(e[i]);
+				} else if ( e[i].id == 'email' ) {
+					num_filled += validateEmail(e[i]);
+				} else {
+					if( e[i].value !== '' ) num_filled++;
+				}
 			} else if( e[i].type == 'radio' ) {
 				if( e[i].checked ) radio++;
 			}
@@ -165,4 +201,51 @@ function spiritFields() {
 	}
 	e = document.getElementById('fields');
 	e.value = items.join('|');
+}
+
+function trim(s)
+{
+  return s.replace(/^\s+|\s+$/, '');
+} 
+
+function validateEmail(fld) {
+	var status = 0;
+	var tfld = trim(fld.value);                        // value of field with whitespace trimmed off
+	var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+	var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
+    
+	if (fld.value == "") {
+		status = 0;
+   } else if (!emailFilter.test(tfld)) {              //test email for illegal characters
+      fld.style.background = 'Yellow';
+		status = 0;
+	} else if (fld.value.match(illegalChars)) {
+      fld.style.background = 'Yellow';
+      status = 0;
+   } else {
+      fld.style.background = 'White';
+		status = 1;
+   }
+   return status;
+}
+
+function validatePhone(fld) {
+   var status = 0;
+//   var stripped = fld.value.replace(/[\(\)\.\-\ ]/g, '');     
+   var stripped = fld.value.replace(/[^0-9]/g, '');     
+
+   if (fld.value == "") {
+		status = 0;
+	} else if (isNaN(parseInt(stripped))) {
+      fld.value = stripped.value;
+   } else if (!(stripped.length == 10 || stripped.length == 7 )) {
+      fld.style.background = 'Yellow';
+   } else {
+		status = 1;
+	}
+	if ( status ) {
+		fld.style.background = '';
+		fld.value = formatPhone(stripped);
+	}
+   return status;
 }

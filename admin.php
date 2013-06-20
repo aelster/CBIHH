@@ -51,6 +51,8 @@ LocalInit();
 
 if( $gDebug ) { DumpPostVars( "After SessionStuff(start): gAction=[$gAction]" ); }
 
+$area = ( isset( $_POST[ "area" ] ) ) ? $_POST[ "area" ] : "";
+
 switch( $gAction ) {
    case 'Back':
       $gAction = 'Welcome';
@@ -66,7 +68,22 @@ switch( $gAction ) {
       break;
 
    case( 'Update' ):
-      if( $gFrom == "UserManagerPassword" ) {
+      if( $gFrom == "DisplayFinancial" ) {
+         PledgeUpdate();
+         $gAction = 'Main';
+         
+      } elseif( $gFrom == 'DisplayGoal' ) {
+         GoalUpdate();
+         $gAction = 'Main';
+
+      } elseif( $gFrom == 'DisplayMain' ) {
+         if( $area == 'reset' ) {
+            $query = "delete from pledges where pledgeType = $PledgeTypeFinancial or pledgeType = $PledgeTypeSpiritual";
+            DoQuery( $query );
+         }
+         $gAction = 'Main';
+         
+      } elseif( $gFrom == "UserManagerPassword" ) {
          UserManager('update');
          $gAction = 'Start';
          
@@ -83,22 +100,7 @@ switch( $gAction ) {
       } elseif( $gFrom == 'PledgeEdit' ) {
          PledgeUpdate();
          $gAction = 'Main';
-         
-      } elseif( $gFrom == "DisplayFinancial" ) {
-         PledgeUpdate();
-         $gAction = 'Main';
 
-      } elseif( $gFrom == 'goal' ) {
-		  $goal = preg_replace( '/[^0-9]/', '', $_POST['goal'] );
-		  DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinGoal" );
-		  if( $gNumRows ) {
-			  DoQuery( "update pledges set amount = $goal where pledgeType = $PledgeTypeFinGoal" );
-		  } else {
-			  DoQuery( "insert into pledges set pledgeType = $PledgeTypeFinGoal, amount = $goal" );
-		  }
-		  $gAction = "Main";
-		  $func = 'goal';
-		  
       } else {
          UserManager( 'update' );
          $gAction = 'Welcome';

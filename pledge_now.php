@@ -78,19 +78,19 @@
       <table>
         <tr>
           <td>*&nbsp;First Name</td>
-          <td><input type="text" name="paynow" id="firstName" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="firstName" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td width="130">*&nbsp;Last Name</td>
-          <td width="442"><input type="text" name="paynow" id="lastName" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td width="442"><input type="text" name="paynow" id="lastName" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>*&nbsp;Phone #</td>
-          <td><input type="text" name="paynow" id="phone" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="phone" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>*&nbsp;E-mail Address</td>
-          <td><input type="text" name="paynow" id="email" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="email" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
 <?php
 if( $gFrom == 'financial' ) {
