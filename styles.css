@@ -1,6 +1,8 @@
 @charset "UTF-8";
 body {
 	width: 980px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 table.pledge {
@@ -166,12 +168,44 @@ hh_intro   {
 	text-align: center;
 }
 
-.adminBody {
-	text-align: center;
-}
-
 .adminBody input {
 	font-size: large;
-	heigh: 30px;
+	height: 30px;
 	width: 100px;
+}
+
+#edit_financial {
+	font-size: large;
+}
+
+#edit_financial table {
+	background-color: #000000;
+	border-collapse: collapse;
+}
+
+#edit_financial th {
+        background-color: #addfff;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+}
+
+#edit_financial th.val {
+        background-color: #addfff;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+		  width: 400px;
+}
+
+#edit_financial td {
+        background-color: #ffffff;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+}
+
+#edit_financial input {
+	width: 400px;
+}
+
+#edit_financial option {
+	font-size: large;
 }

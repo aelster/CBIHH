@@ -80,7 +80,15 @@ switch( $gAction ) {
          $gAction = "Main";
          $func = 'users';
 
-	  } elseif( $gFrom == 'goal' ) {
+      } elseif( $gFrom == 'PledgeEdit' ) {
+         PledgeUpdate();
+         $gAction = 'Main';
+         
+      } elseif( $gFrom == "DisplayFinancial" ) {
+         PledgeUpdate();
+         $gAction = 'Main';
+
+      } elseif( $gFrom == 'goal' ) {
 		  $goal = preg_replace( '/[^0-9]/', '', $_POST['goal'] );
 		  DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinGoal" );
 		  if( $gNumRows ) {
@@ -105,6 +113,7 @@ if( $gDebug ) { DumpPostVars( "After Login/Logout:  gAction=[$gAction]" ); }
 
 $vect = $args = array();
 
+$vect['Edit'] = 'PledgeEdit';
 $vect['Inactive'] = 'UserManager';
 $vect['Login']	= 'UserManager';
 $vect['Logout'] = 'UserManager';
@@ -118,6 +127,8 @@ $args['Login'] = array( 'verify' );
 $args['Logout'] = array( 'logout' );
 $args['Resend'] = array( 'resend' );
 $args['Start'] = array('login');
+
+echo "<div class=center>";
 
 if( ! empty( $vect[ $gAction ] ) ) {
 	$func = $vect[ $gAction ];
@@ -154,6 +165,8 @@ if( ! empty( $vect[ $gAction ] ) ) {
         
 	}
 }
+
+echo "</div>";
 
 echo "</form>";
 echo "</body>";

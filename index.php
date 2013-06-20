@@ -49,13 +49,13 @@ if( $action == "pledge" ) {
 	include( "spiritual.php" );
 
 } elseif( $action == "paynow" ) {
-	include( "store_pledge.php" );
-	include( "send_confirmation.php" );
+	PledgeStore();
+	SendConfirmation();
 	include( "thank_you.php" );
 	
 } elseif( $action == "pledges_to_date" ) {
 	include( "pledges_to_date.php" );
-	
+
 } else {
 	echo "uh-oh, not sure what to do with action: [$action]<br>";
 }

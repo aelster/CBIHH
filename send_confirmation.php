@@ -133,7 +133,7 @@ if( 1 ) {
 	
 	
 	$message
-	->setFrom(array('beth@elsternet.com' => 'Beth Elster'))
+	->setFrom(array('support@elsternet.com' => 'Andy Elster'))
 	->setTo(array( $email => "$firstName $lastName" ) )
 	->setBcc(array( 'beth@elsternet.com' => 'Beth Elster' ) )
 	->setBody( join('',$html), 'text/html' )
