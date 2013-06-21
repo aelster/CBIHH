@@ -54,7 +54,7 @@
   <?php
   if( $gFrom == "financial" ) {
 	  $amount = $_POST['amount'];
-	  printf( "<p>Thank you for your generous pledge of \$ %.2f.</p>", number_format($amount, 2 ) );
+	  printf( "<p>Thank you for your generous pledge of \$ %s.</p>", number_format($amount, 2 ) );
   } else if( $gFrom == 'spiritual' ) {
 	  echo "<div class=spirit_detail>";
 	  printf( "Thank you for your pledge to:<br>" );
