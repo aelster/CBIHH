@@ -28,12 +28,32 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+<!--
       <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
+-->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
   <input type=hidden name=from id=from value=financial />
   <h2>5774 High Holy Day Appeal </h2>
+  <?php
+DoQuery( "select sum(amount), count(pledgeType) from pledges where pledgeType = $PledgeTypeFinancial" );
+list( $total,$num ) = mysql_fetch_array( $result );
+DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
+list( $goal ) = mysql_fetch_array( $result );
+	
+echo "<hr>";
+echo "<div class=to_date>";
+echo "<table><tr><td>";
+echo "<p class=num>$num</p>";
+echo "<p>Donors to date</p>";
+echo "</td><td>";
+echo "<p class=num>$ " . number_format( $total, 0 ) . "</p>";
+echo "<p>Pledged of $ " . number_format( $goal, 0 ) . " goal</p>";
+echo "</td></tr></table>";
+echo "</div>";
+echo "<hr>";
+  ?>
   <p>I pledge the following amount:</p>
   <div>
   <?php

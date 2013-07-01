@@ -353,6 +353,21 @@ function LocalInit() {
 	while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
 		$gSpiritIDtoDesc[$id] = $desc;
 	}
+	
+	$gSpiritIDstats = array();
+	DoQuery( "select pledgeIds, pledgeOther from pledges" );
+	while( list( $pids, $pother ) = mysql_fetch_array( $result ) ) {
+		$tmp = preg_split( '/,/', $pids );
+		foreach( $tmp as $id ) {
+			if( empty( $gSpiritIDstats[$id] ) ) $gSpiritIDstats[$id] = 0;
+			$gSpiritIDstats[$id]++;
+		}
+		$id = 0;
+		if( ! empty( $pother ) ) {
+			if( empty( $gSpiritIDstats[$id] ) ) $gSpiritIDstats[$id] = 0;
+			$gSpiritIDstats[$id]++;
+		}
+	}
 }
 
 function PledgeEdit() {

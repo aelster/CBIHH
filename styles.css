@@ -76,11 +76,11 @@ hh_intro   {
 }
 
 .spiritLeft {
-	width:475px;
+	width:485px;
 }
 
 .spiritRight {
-	width: 475px;
+	width: 465px;
 	margin-bottom: 10px;
 }
 
@@ -208,4 +208,28 @@ hh_intro   {
 
 #edit_financial option {
 	font-size: large;
+}
+
+.to_date {
+	text-align: center;
+	font-size: small;
+}
+
+.to_date table {
+	width: 70%;
+	margin: auto;
+}
+
+.to_date td {
+	width: 50%;
+}
+
+.to_date .num {
+	font-size: 18pt;
+	font-weight: bold;
+	background-color: #AAAE8A;
+	width: 150px;
+	text-align: center;
+	margin: auto;
+	border: thin solid;
 }

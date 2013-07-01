@@ -12,6 +12,7 @@ global $gMailLive;
 global $gNumRows;
 global $gSourceCode;
 global $gSpiritIDtoDesc;
+global $gSpiritIDstats;
 global $gTrace;
 global $gUserId;
 

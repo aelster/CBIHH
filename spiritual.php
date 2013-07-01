@@ -28,13 +28,41 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+<!--
       <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
+-->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
   <input type=hidden name=from id=from value=spiritual />
   <div class="content">
   <h2>5774 High Holy Day Appeal </h2>
+  <?php
+DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
+$num = $gNumRows;
+$mitzvot = 0;
+while( list( $ids, $other ) = mysql_fetch_array( $result ) ) {
+	if( ! empty( $ids ) ) {
+		$tmp = preg_split( '/,/', $ids );
+		$mitzvot += count($tmp);
+	}
+	if( ! empty( $other ) ) {
+		$mitzvot++;
+	}
+}
+	
+echo "<hr>";
+echo "<div class=to_date>";
+echo "<table><tr><td>";
+echo "<p class=num>$num</p>";
+echo "<p>Individuals</p>";
+echo "</td><td>";
+echo "<p class=num>$mitzvot</p>";
+echo "<p>Pledged mitzvot to date<br>See below for (counts)</p>";
+echo "</td></tr></table>";
+echo "</div>";
+echo "<hr>";
+  ?>
   <p>I pledge that, during the coming year, I will fulfill the mitzvah/mitzvot which I am choosing below:</p>
     <div class=spirit>
         <div class=spiritLeft>
@@ -43,7 +71,9 @@ echo "<table class=spiritTable>";
 echo "<tr><th>Torah</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualTorah" );
 while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
-	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
+	 $id, $freq, $desc );
 }
 echo "</table>";
 
@@ -51,7 +81,9 @@ echo "<table class=spiritTable>";
 echo "<tr><th>Avodah</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualAvodah" );
 while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
-	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
+	 $id, $freq, $desc );
 }
 echo "</table>";
 			?>
@@ -59,7 +91,12 @@ echo "</table>";
             <tr><th>Other</th></tr>
             <tr><td>
                 <input type=checkbox name=spirit id=other onClick="clearSpiritOther();makeActive('spirit');"/>
-        		<input type=text size=55 name=other_desc id=spiritOther onkeyup="makeActive('spirit');" value="Check box and enter description" />
+<?php
+$id = 0;
+$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
+echo "(" . $freq . ")";
+?>
+        		<input type=text size=50 name=other_desc id=spiritOther onkeyup="makeActive('spirit');" value="Check box and enter description" />
 			</td></tr>
 		</table>
         </div> <!-- end spiritLeft -->
@@ -69,7 +106,10 @@ echo "<table class=spiritTable>";
 echo "<tr><th>Gemilut Chasadim</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualGemilut" );
 while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
-	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">%s</td></tr>", $id, $desc );
+	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
+
+	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
+	 $id, $freq, 		$desc );
 }
 echo "</table>";
 ?>

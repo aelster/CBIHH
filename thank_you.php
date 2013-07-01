@@ -28,7 +28,9 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+<!--
       <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
+-->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
