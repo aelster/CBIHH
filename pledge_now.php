@@ -28,9 +28,6 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
-<!--
-      <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
--->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
@@ -69,6 +66,7 @@
 			  printf( "<script type='text/javascript'>pledgeIds.push('id_' + %d);</script>\n", $id );
 		  } else {
 			  $desc = CleanString( $_POST['other_desc'] );
+			  if( empty( $desc ) ) continue;
 			  printf( "<script type='text/javascript'>pledgeOther = '%s';</script>\n", $desc );
 		  }
 		  echo "<li>$desc</li>\n";

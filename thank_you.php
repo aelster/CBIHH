@@ -28,9 +28,6 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
-<!--
-      <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
--->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
@@ -43,7 +40,6 @@
       <p>
         <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />&nbsp;
-        <input class=buttonOk type=button onClick="addAction('pledges_to_date');" value="Pledges to Date" />
       </p>
 </div>
     <!-- end .content -->

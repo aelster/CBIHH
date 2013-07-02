@@ -572,9 +572,12 @@ function SendConfirmation() {
 		}
 		
 	} else {
-		$html[] = "&nbsp;&nbsp;Thank you for your pledge of the following mitzvot:<br>";
-		$html[] = "<ul>";
 		$tmp = preg_split( '/,/', $pledgeIds );
+		$j = count($tmp);
+		$j += empty( $pledgeOther ) ? 0 : 1;
+		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
+		$html[] = "&nbsp;&nbsp;Thank you for your pledge of the following $word:<br>";
+		$html[] = "<ul>";
 		if( count( $tmp ) ) {
 			foreach( $tmp as $tag ) {
 				list( $na, $id ) = preg_split( '/_/', $tag );
@@ -609,9 +612,12 @@ function SendConfirmation() {
 		}
 		
 	} else {
-		$text[] = "  Thank you for your pledge of the following mitzvot:\n";
-		$text[] = "\n";
 		$tmp = preg_split( '/,/', $pledgeIds );
+		$j = count($tmp);
+		$j += empty( $pledgeOther ) ? 0 : 1;
+		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
+		$text[] = "  Thank you for your pledge of the following $word:\n";
+		$text[] = "\n";
 		if( count( $tmp ) ) {
 			foreach( $tmp as $tag ) {
 				list( $na, $id ) = preg_split( '/_/', $tag );

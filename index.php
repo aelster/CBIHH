@@ -53,9 +53,6 @@ if( $action == "pledge" ) {
 	SendConfirmation();
 	include( "thank_you.php" );
 	
-} elseif( $action == "pledges_to_date" ) {
-	include( "pledges_to_date.php" );
-
 } else {
 	echo "uh-oh, not sure what to do with action: [$action]<br>";
 }

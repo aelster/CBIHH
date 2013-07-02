@@ -28,16 +28,14 @@
       <li><a onclick="addAction('pledge');">Pledge Home</a></li>
       <li><a onclick="addAction('financial');">Financial Pledge</a></li>
       <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
-<!--
-      <li><a onclick="addAction('pledges_to_date');">Pledges To Date</a></li>
--->
   </ul>
 <!-- end .header --></div>
   <!-- InstanceBeginEditable name="Content" -->
   <div class="content">
     <p class="content"><br />
         <br />
-      The High Holy Days begin early this year, and CBI is kicking off our annual appeal. I am instituting an online pledge opportunity for the first time!  If successful, I will present the “State of the Congregation”, but not make an appeal, during Kol Nidre services.  I ask you to make both financial and spiritual pledges as we renew ourselves in the New Year.</p>
+      Rosh Hashana begins early this year, on September 4th, and CBI is kicking off our High Holiday Appeal.  For the first time we are asking you to make online pledges before the holidays, and for the first time we are asking you to make a spiritual pledge as well as a financial pledge.  The spiritual pledge is your pledge to take on at least one new mitzvah in the coming year.  It can be anything you choose, some options I suggest are to attend a minyan or to donate blood.  This is a pledge to do something for yourself, as well as for the community.  Please consider making both spiritual and financial pledges as we renew ourselves in the New Year. 
+ but not make an appeal, during Kol Nidre services.  I ask you to make both financial and spiritual pledges as we renew ourselves in the New Year.</p>
       <p class="content">Please click below to view the 3-minute video 5774 High Holiday Appeal.</p>
       <p class="content">My wish is that each of us will contribute financially as generously as we can, and spiritually in a way that is personally meaningful. I am hoping to stand before our congregation during the High Holy Days and be able to say that 100% of our incredible community contributed and participated. Every pledge matters and makes a difference. Please contact the CBI office with any questions. Thank you for your support.  I wish you all a year of health, happiness, prosperity and growth.</p>
 	<p class="content-fltlft" >
@@ -53,7 +51,6 @@
       <p>
         <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />&nbsp;
         <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />&nbsp;
-        <input class=buttonOk type=button onClick="addAction('pledges_to_date');" value="Pledges to Date" />
       </p>
     </div>
     <!-- end .content -->
