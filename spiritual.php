@@ -114,7 +114,7 @@ echo "</table>";
     </div> <!-- end spirit -->
 	<div class=spiritBottom>
     <p>
-      <input type=button class=buttonNotOk id=spiritNow onclick="spiritFields();addAction('pledge_now');" value="Pledge Now" />
+      <input type=button class=buttonNotOk id=spiritNow onclick="spiritFields();addAction('pledge_now');" value="Pledge Now" disabled />
     </p>
     </div>
   </div> <!-- end content -->
