@@ -634,7 +634,7 @@ function SendConfirmation() {
 	$text[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
 	
 	$message
-	->setFrom(array('support@elsternet.com' => 'CBI'))
+	->setFrom(array('cbi18@cbi18.org' => 'CBI'))
 	->setTo(array( $email => "$firstName $lastName" ) )
 	->setBcc(array( 'beth@elsternet.com' => 'Beth Elster' ) )
 	->setBody( join('',$html), 'text/html' )

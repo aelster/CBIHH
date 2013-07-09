@@ -14,25 +14,50 @@
 <!-- InstanceEndEditable -->
 </head>
 <body onload="firstName();">
+<div id="FloatPage">
+<div id="page">
+  <div id="AboveBar">
+  	<div id="AboveBarLeft">
+	  <div id="Logo">
+		<a href="http://www.cbi18.org" style="background-image:none; width:auto; height:auto;">
+        	<img src="http://www.cbi18.org/images/CBI_logo.png" alt="Congregation B&#039;nai Israel" />
+        </a>
+      <!-- .end Logo --></div>
+   <!-- .end AboveBarLeft --></div>
+   <div id="AboveBarRight">
+		<div id="paypaldonate">
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="hosted_button_id" value="5N98SQ897NR92" />
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="image" src="http://www.cbi18.org/images/Donate_sm.jpg" border="0"
+                 name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+    	</div>
+		<div id="candlelight">
+        	<a href="#topReveal"><img src="http://www.cbi18.org/images/Candle_sm.jpg" /></a>
+        </div>
+        <div id="textwidget">
+    		<h3>A Conservative Congregation serving the <br>diverse Jewish needs of Orange County</h3>
+	  	</div>
 
-<div class="container">
+   <!-- .end AboveBarRight --></div>
+   <!-- .end AboveBar --></div>
   <form action="" method="post" id="form1">
   <input type=hidden name=action id=action />
   <input type=hidden name=amount id=amount />
   <input type=hidden name=fields id=fields />
-  <div class="header">
-  <img id=img1 src="assets/CBI_logo.png" alt="CBI Logo" width="263" height="110"/>
-  <img id=img2 src="assets/CBI_header_right.png" width="405" height="96" alt="HeaderName" />
-  <ul id="MenuBar1" class="MenuBarHorizontal">
-      <li><a href="http://cbi18.org/">CBI Home</a></li>
-      <li><a onclick="addAction('pledge');">Pledge Home</a></li>
-      <li><a onclick="addAction('financial');">Financial Pledge</a></li>
-      <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
-  </ul>
-<!-- end .header --></div>
+  <div id="MenuBar">
+      <ul id="MenuBar1" class="MenuBarHorizontal">
+          <li><a href="http://cbi18.org/">CBI Home</a></li>
+          <li><a onclick="addAction('pledge');">Pledge Home</a></li>
+          <li><a onclick="addAction('financial');">Financial Pledge</a></li>
+          <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+      </ul>
+  <!-- end .MenuBar --></div>
+  <div id="content">
   <!-- InstanceBeginEditable name="Content" -->
   <input type=hidden name=from id=from value=spiritual />
-  <div class="content">
   <h2>5774 High Holy Day Appeal </h2>
   <?php
 DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
@@ -112,18 +137,25 @@ echo "</table>";
 ?>
 		</div> <!-- end spiritRight -->
     </div> <!-- end spirit -->
-	<div class=spiritBottom>
-    <p>
+    <div id="bottom_buttons">
       <input type=button class=buttonNotOk id=spiritNow onclick="spiritFields();addAction('pledge_now');" value="Pledge Now" disabled />
-    </p>
     </div>
-  </div> <!-- end content -->
   <!-- InstanceEndEditable -->
-  <div class="footer">
-    <p><img src="assets/CBI_footer.png" width="971" height="194" alt="Footer" /></p>
+  <!-- end .content --></div>
+  <div id="footer">
+    <p><img src="assets/CBI_footer.png" alt="Footer" width="971" height="194" usemap="#Map" border="0" />
+      <map name="Map" id="Map">
+        <area shape="circle" coords="381,80,17" href="http://www.facebook.com/cbi18" alt="Facebook" />
+        <area shape="circle" coords="428,80,17" href="http://twitter.com/cbi18" alt="Twitter" />
+        <area shape="circle" coords="470,79,16" href="http://www.flickr.com/photos/56463940@N05" alt="Flikr" />
+        <area shape="circle" coords="517,78,16" href="http://www.youtube.com/cbi18video" alt="YouTube" />
+        <area shape="rect" coords="41,57,209,86" href="http://eepurl.com/clLK" alt="Join the Email List" />
+      </map>
+    </p>
     <!-- end .footer --></div>
     </form>
-  <!-- end .container --></div>
+    <!-- .end .page --></div>
+    <!-- .end FloatPage --></div>
 <script type="text/javascript">
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
 </script>
