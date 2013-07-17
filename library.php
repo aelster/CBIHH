@@ -370,6 +370,37 @@ function LocalInit() {
 	}
 }
 
+function PayPal() {
+	include( 'globals.php' );
+	if( $gTrace ) {
+		$gFunction[] = "PayPal()";
+		Logger();
+	}
+	
+	foreach( array('amount','email','firstName','lastName','phone') as $fld ) {
+		$$fld = $_POST[$fld];
+	}
+	
+	echo <<<END
+<form name=form_paypal action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="amount" value="$amount">
+	<input type="hidden" name="email" value="$email">
+	<input type="hidden" name="first_name" value="$firstName">
+	<input type="hidden" name="last_name" value="$lastName">
+	<input type="hidden" name="phone" value="$phone">
+	<input type="image" src="http://www.cbi18.org/images/Donate_sm.jpg" border="0"
+		  name="submit" alt="PayPal - The safer, easier way to pay online!">
+	<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+<script type="text/javascript">
+form_paypal.submit();
+</script>
+END;
+
+	if( $gTrace ) array_pop( $gFunction );
+}
+	
 function PledgeEdit() {
 	include( 'globals.php' );
 	if( $gTrace ) {

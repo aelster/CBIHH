@@ -154,6 +154,28 @@ function payNow() {
 	e.value = items.join('|');
 }
 
+function paypal() {
+	var id, n;
+	id = document.getElementById('lastName');
+	n = document.getElementsByName('lastName');
+	n[0].value = id.value;
+	
+	id = document.getElementById('firstName');
+	n = document.getElementsByName('firstName');
+	n[0].value = id.value;
+	
+	id = document.getElementById('phone');
+	n = document.getElementsByName('phone');
+	n[0].value = id.value;
+	
+	id = document.getElementById('email');
+	n = document.getElementsByName('email');
+	n[0].value = id.value;
+	
+	n = document.getElementsByName('amount');
+	n[0].value = pledge_amount;
+}
+
 function setAmount() {
 	var e = document.getElementsByName('Pledges');
 	for( var i=0; i<e.length; i++ ) {

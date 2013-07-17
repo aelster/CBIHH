@@ -66,6 +66,9 @@
 	  $radio = 0;
   }
   printf( "<input type=hidden name=from id=from value=\"%s\">", $gFrom );
+  foreach( array( 'firstName', 'lastName', 'phone', 'email' ) as $fld ) {
+	  printf( "<input type=hidden name=\"%s\">\n", $fld );
+  }
   echo "<script type='text/javascript'>\n";
   printf( "var radio_required = %d;\n", $radio );
   printf( "var pledge_amount = '%.2f';\n", $_POST['amount'] );
@@ -125,6 +128,13 @@ if( $gFrom == 'financial' ) {
 	<td>*&nbsp;Payment (select one)</td>
 	<td>
       <table width="600">
+	    <tr>
+		  <td>
+		  	<input type=radio>
+			<input type="image" src="assets/pp_secure_213wx37h.gif" border="0"
+                 name="paypal" id="paypal" alt="PayPal - The safer, easier way to pay online!" onClick="paypal();addAction('paypal');">
+	      </td>
+		</tr>
         <tr>
           <td><label>
             <input type="radio" name="paynow" value=$PaymentCredit onClick="makeActive('paynow');" />

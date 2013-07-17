@@ -53,6 +53,9 @@ if( $action == "pledge" ) {
 	SendConfirmation();
 	include( "thank_you.php" );
 	
+} elseif( $action == "paypal" ) {
+	PayPal();
+	
 } else {
 	echo "uh-oh, not sure what to do with action: [$action]<br>";
 }
