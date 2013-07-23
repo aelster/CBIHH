@@ -60,7 +60,8 @@ function makeActive(area) {
 			if( e[i].checked ) {
 				if( e[i].value == 'other' ) {
 					var f = document.getElementById('pledgeOther');
-					if( f.value > 0 ) ok = 1;
+					f = f.value.replace(/,/g,'');
+					if( f > 0 ) ok = 1;
 				} else {
 					ok = 1;
 				}
@@ -181,8 +182,9 @@ function setAmount() {
 	for( var i=0; i<e.length; i++ ) {
 		if( e[i].checked ) {
 			if( e[i].value == 'other' ) {
-				var x = document.getElementById('pledgeOther').value;
-			} else {
+				var t = document.getElementById('pledgeOther').value;
+				var x = t.replace(/,/g,'');
+		} else {
 				var x = e[i].value;
 			}
 		}

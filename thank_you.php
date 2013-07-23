@@ -25,6 +25,7 @@
       <!-- .end Logo --></div>
    <!-- .end AboveBarLeft --></div>
    <div id="AboveBarRight">
+   <!--
 		<div id="paypaldonate">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 				<input type="hidden" name="hosted_button_id" value="5N98SQ897NR92" />
@@ -37,6 +38,7 @@
 		<div id="candlelight">
         	<a href="#topReveal"><img src="http://www.cbi18.org/images/Candle_sm.jpg" /></a>
         </div>
+       -->
         <div id="textwidget">
     		<h3>A Conservative Congregation serving the <br>diverse Jewish needs of Orange County</h3>
 	  	</div>

@@ -25,6 +25,7 @@
       <!-- .end Logo --></div>
    <!-- .end AboveBarLeft --></div>
    <div id="AboveBarRight">
+   <!--
 		<div id="paypaldonate">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 				<input type="hidden" name="hosted_button_id" value="5N98SQ897NR92" />
@@ -37,6 +38,7 @@
 		<div id="candlelight">
         	<a href="#topReveal"><img src="http://www.cbi18.org/images/Candle_sm.jpg" /></a>
         </div>
+       -->
         <div id="textwidget">
     		<h3>A Conservative Congregation serving the <br>diverse Jewish needs of Orange County</h3>
 	  	</div>
@@ -130,9 +132,10 @@ if( $gFrom == 'financial' ) {
       <table width="600">
 	    <tr>
 		  <td>
-		  	<input type=radio>
-			<input type="image" src="assets/pp_secure_213wx37h.gif" border="0"
+		  	<input type=radio disabled>
+			<input type="image" src="assets/pp_secure_213wx37h.gif" border="0" disabled
                  name="paypal" id="paypal" alt="PayPal - The safer, easier way to pay online!" onClick="paypal();addAction('paypal');">
+				 ** Not yet available **
 	      </td>
 		</tr>
         <tr>
