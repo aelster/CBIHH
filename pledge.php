@@ -69,7 +69,7 @@
       CBI President
       </p>  
       <div id="video">
-        <embed src="assets/HH Pledge Intro.mp4" width="240" class="fltrt" id=video height="192" autostart="false"></embed>
+	<embed src="assets/Pledge-Video-4.mp4" width="320" class="fltrt" id=video height="216" autostart="false"></embed>
       </div>
       <br />
     <div id="bottom_buttons">
