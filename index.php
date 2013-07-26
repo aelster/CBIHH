@@ -11,6 +11,7 @@ SiteLoad( 'CommonV2' );
 $gDb = OpenDb();                # Open the MySQL database
 
 LocalInit();
+$ok = session_start();
 
 ?>
 <html>
@@ -27,6 +28,12 @@ if( $gDebug ) {
 	sort( $tmp );
 	foreach( $tmp as $key ) {
 		printf( "_POST['%s'] = %s<br>", $key, $_POST[$key] );
+	}
+	$tmp = array_keys( $_SESSION );
+	sort( $tmp );
+	echo "SessionStart: $ok<br>";
+	foreach( $tmp as $key ) {
+		printf( "_SESSION['%s'] = '%s'<br>", $key, $_SESSION[$key] );
 	}
 }
 

@@ -494,6 +494,7 @@ function PledgeStore() {
 	$tmp = preg_split( '/\|/', $_POST['fields'] );
 	foreach( $tmp as $nvp ) {
 		list( $name, $value ) = preg_split( '/=/', $nvp );
+		$_SESSION[$name] = $value;
 		if( $name == 'pledgeIds' ) {
 			$pledgeIds = array();
 			$tmp2 = preg_split( '/,/', $value );

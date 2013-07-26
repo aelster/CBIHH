@@ -105,25 +105,31 @@
 	  echo "</ul>";
 	  echo "</div><br>";
   }
-  ?>
+  
+  $fn = isset( $_SESSION['firstName'] ) ? $_SESSION['firstName'] : "";
+  $ln = isset( $_SESSION['lastName'] ) ? $_SESSION['lastName'] : "";
+  $pn = isset( $_SESSION['phone'] ) ? $_SESSION['phone'] : "";
+  $em = isset( $_SESSION['email'] ) ? $_SESSION['email'] : "";
+
+  echo <<<END
       <table>
         <tr>
           <td>*&nbsp;First Name</td>
-          <td><input type="text" name="paynow" id="firstName" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="firstName" value="$fn" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td width="130">*&nbsp;Last Name</td>
-          <td width="442"><input type="text" name="paynow" id="lastName" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td width="442"><input type="text" name="paynow" id="lastName" value="$ln" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>*&nbsp;Phone #</td>
-          <td><input type="text" name="paynow" id="phone" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="phone" value="$pn" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
         <tr>
           <td>*&nbsp;E-mail Address</td>
-          <td><input type="text" name="paynow" id="email" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
+          <td><input type="text" name="paynow" id="email" value="$em" onchange="makeActive('paynow');" onkeyup="makeActive('paynow');" size=60 /></td>
         </tr>
-<?php
+END;
 if( $gFrom == 'financial' ) {
 		  echo <<<END
   <tr>
@@ -183,6 +189,7 @@ END;
     <!-- .end .page --></div>
     <!-- .end FloatPage --></div>
 <script type="text/javascript">
+makeActive('paynow');
 var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
 </script>
 </body>
