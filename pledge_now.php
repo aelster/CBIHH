@@ -60,6 +60,15 @@
   <div id="content">
   <!-- InstanceBeginEditable name="Content" -->
   <?php
+/*  	    <tr>
+		  <td>
+		  	<input type=radio disabled>
+			<input type="image" src="assets/pp_secure_213wx37h.gif" border="0" disabled
+                 name="paypal" id="paypal" alt="PayPal - The safer, easier way to pay online!" onClick="paypal();addAction('paypal');">
+				 ** Not yet available **
+	      </td>
+		</tr>
+*/
   if( $gFrom == "financial" ) {
 	  $tag = "Financial Pledge";
 	  $radio = 1;
@@ -136,14 +145,6 @@ if( $gFrom == 'financial' ) {
 	<td>*&nbsp;Payment (select one)</td>
 	<td>
       <table width="600">
-	    <tr>
-		  <td>
-		  	<input type=radio disabled>
-			<input type="image" src="assets/pp_secure_213wx37h.gif" border="0" disabled
-                 name="paypal" id="paypal" alt="PayPal - The safer, easier way to pay online!" onClick="paypal();addAction('paypal');">
-				 ** Not yet available **
-	      </td>
-		</tr>
         <tr>
           <td><label>
             <input type="radio" name="paynow" value=$PaymentCredit onClick="makeActive('paynow');" />

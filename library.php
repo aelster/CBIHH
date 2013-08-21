@@ -668,7 +668,11 @@ function SendConfirmation() {
 	$message
 	->setFrom(array('cbi18@cbi18.org' => 'CBI'))
 	->setTo(array( $email => "$firstName $lastName" ) )
-	->setBcc(array( 'beth@elsternet.com' => 'Beth Elster' ) )
+	->setBcc(array(
+						'cbi18@cbi18.org' => 'CBI',
+						'beth@elsternet.com' => 'Beth Elster',
+						'hcoulter@cbi18.org' => 'Helene Coulter'
+						) )
 	->setBody( join('',$html), 'text/html' )
 	->addPart( join('',$text), 'text/plain' )
 	;

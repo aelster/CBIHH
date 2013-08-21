@@ -61,9 +61,9 @@
   <!-- InstanceBeginEditable name="Content" -->
   <div class="content">
     <p>
-      Rosh Hashana begins early this year, on September 4th, and CBI is kicking off our High Holiday Appeal.  For the first time we are asking you to make online pledges before the holidays, and for the first time we are asking you to make both a spiritual pledge and a financial pledge.  The spiritual pledge is your commitment to take on at least one new mitzvah in the coming year.  It can be anything you choose, some options I suggest are to attend a minyan or to donate blood.  This is a pledge to do something for yourself, as well as for the community.  Please consider making spiritual as well as financial pledges as we renew ourselves in the New Year. 
+      Rosh Hashana begins early this year, on September 4th, and CBI is kicking off our High Holy Day Appeal.  For the first time we are asking you to make online pledges before the holidays, and for the first time we are asking you to make both a spiritual pledge and a financial pledge.  The spiritual pledge is your commitment to take on at least one new mitzvah in the coming year.  It can be anything you choose, some options I suggest are to attend a minyan or to donate blood.  This is a pledge to do something for yourself, as well as for the community.  Please consider making spiritual as well as financial pledges as we renew ourselves in the New Year. 
 </p>
-      <p>Please click below to view the 3-minute video 5774 High Holiday Appeal.</p>
+      <p>Please click the arrow below to view the 3-minute video 5774 High Holy Day Appeal.</p>
       <p>My wish is that each of us will contribute financially as generously as we can, and spiritually in a way that is personally meaningful. I am hoping to stand before our congregation during the High Holy Days and be able to say that 100% of our incredible community contributed and participated. Every pledge matters and makes a difference. Please contact the CBI office with any questions. Thank you for your support.  I wish you all a year of health, happiness, prosperity and growth.</p>
 	<p>
       L'Shana Tova,<br />
