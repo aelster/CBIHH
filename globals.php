@@ -8,6 +8,7 @@ global $gDebug;
 global $gEnabled;
 global $gFrom;
 global $gFunction;
+global $gMailAdmin;
 global $gMailLive;
 global $gNumRows;
 global $gSourceCode;

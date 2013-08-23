@@ -49,7 +49,7 @@ function DisplayFinancial() {
 	echo "<table class=sortable>";
 	echo "<tr>";
 	echo "  <th>#</th>";
-	echo "  <th>Amount</th>";
+	echo "  <th class=\"sorttable_numeric\">Amount</th>";
 	echo "  <th>Donor</th>";
 	echo "  <th>Phone</th>";
 	echo "  <th>Method</th>";
@@ -578,8 +578,9 @@ function SendConfirmation() {
 	}
 
 	$financial = ( $post['from'] == 'financial' ) ? 1 : 0;
+	$sfx = $gMailLive ? "" : " (gMailLive=0)";
 	
-	$subject = "CBI " . ucfirst( $post['from'] ) . " Pledge Confirmation";
+	$subject = "CBI " . ucfirst( $post['from'] ) . " Pledge Confirmation" . $sfx;
 	$message = Swift_Message::newInstance($subject);
 
 	$html = $text = array();
@@ -666,25 +667,29 @@ function SendConfirmation() {
 
 	$text[] = "\n";
 	$text[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
-	
+
+	if( $gMailLive ) {
+		$message->setTo( array( $email => "$firstName $lastName" ) );
+		$message->setFrom(array('cbi18@cbi18.org' => 'CBI'));
+		if( $financial ) {
+			$message->setBcc(array(
+							'beth@elsternet.com' => 'Beth Elster',
+							'hcoulter@cbi18.org' => 'Helene Coulter'
+							) );
+		} else {
+			$message->setBcc(array(
+							'beth@elsternet.com' => 'Beth Elster'
+							) );
+		}
+	} else {
+		$message->setTo( $gMailAdmin );
+		$message->setFrom( $gMailAdmin );
+	}
+
 	$message
-	->setFrom(array('cbi18@cbi18.org' => 'CBI'))
-	->setTo(array( $email => "$firstName $lastName" ) )
 	->setBody( join('',$html), 'text/html' )
 	->addPart( join('',$text), 'text/plain' )
 	;
-
-	if( $financial ) {
-		$message->setBcc(array(
-						'beth@elsternet.com' => 'Beth Elster',
-						'hcoulter@cbi18.org' => 'Helene Coulter'
-						) );
-	} else {
-		$message->setBcc(array(
-						'cbi18@cbi18.org' => 'CBI',
-						'beth@elsternet.com' => 'Beth Elster'
-						) );
-	}
 
 	MyMail($message);
 
