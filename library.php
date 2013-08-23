@@ -577,6 +577,8 @@ function SendConfirmation() {
 		$$key = $val;
 	}
 
+	$financial = ( $post['from'] == 'financial' ) ? 1 : 0;
+	
 	$subject = "CBI " . ucfirst( $post['from'] ) . " Pledge Confirmation";
 	$message = Swift_Message::newInstance($subject);
 
@@ -586,7 +588,7 @@ function SendConfirmation() {
 	$html[] = "<html><head></head><body>";
 	$html[] = '<img src="' . $cid . '" alt="Image" /><br>';
 	$html[] = "Dear $firstName $lastName,<br><br>";
-	if( $post['from'] == 'financial' ) {
+	if( $financial ) {
 		$html[] = "&nbsp;&nbsp;Thank you for your pledge of \$ " . number_format( $amount, 2 ) . ".";
 		$pmt_type = $post['paynow'];
 		switch( $pmt_type ) {
@@ -626,7 +628,7 @@ function SendConfirmation() {
 	$html[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
 	
 	$text[] = "Dear $firstName $lastName,\n";
-	if( $post['from'] == 'financial' ) {
+	if( $financial ) {
 		$text[] = "  Thank you for your pledge of \$ " . number_format( $amount, 2 ) . ".";
 		$pmt_type = $post['paynow'];
 		switch( $pmt_type ) {
@@ -668,14 +670,21 @@ function SendConfirmation() {
 	$message
 	->setFrom(array('cbi18@cbi18.org' => 'CBI'))
 	->setTo(array( $email => "$firstName $lastName" ) )
-	->setBcc(array(
-						'cbi18@cbi18.org' => 'CBI',
-						'beth@elsternet.com' => 'Beth Elster',
-						'hcoulter@cbi18.org' => 'Helene Coulter'
-						) )
 	->setBody( join('',$html), 'text/html' )
 	->addPart( join('',$text), 'text/plain' )
 	;
+
+	if( $financial ) {
+		$message->setBcc(array(
+						'beth@elsternet.com' => 'Beth Elster',
+						'hcoulter@cbi18.org' => 'Helene Coulter'
+						) );
+	} else {
+		$message->setBcc(array(
+						'cbi18@cbi18.org' => 'CBI',
+						'beth@elsternet.com' => 'Beth Elster'
+						) );
+	}
 
 	MyMail($message);
 
