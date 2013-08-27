@@ -26,6 +26,8 @@ function DisplayFinancial() {
 		Logger();
 	}
 	
+	$today = date('j-M-Y');
+	
 	$area = $_POST['area'];
 	$func = $_POST['func'];
 	
@@ -33,6 +35,15 @@ function DisplayFinancial() {
 	echo "<div class=CommonV2>";
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
 	
+	$jsx = array();
+	$jsx[] = "setValue('area','spiritual')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Spiritual>";
+
+	echo "<br>";
+	echo "<input type=button onclick=\"addAction('Logout');\" value=Logout>";
+
 	DoQuery( "select sum(amount) from pledges where pledgeType = $PledgeTypeFinancial" );
 	list( $total ) = mysql_fetch_array( $result );
 	
@@ -44,6 +55,7 @@ function DisplayFinancial() {
 	echo "<li>The columns are sortable by clicking on their header</li>";
 	$x = $total * 100.0 / $goal;
 	printf( "<li>Total pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
+	echo "<li><span class=today>Highlighted pledges were made today ($today)</span></li>";
 	echo "</ul>";
 	echo "<div class=CommonV2>";
 	echo "<table class=sortable>";
@@ -64,16 +76,18 @@ function DisplayFinancial() {
 	$i = 0;
 	while( $rec = mysql_fetch_assoc( $result ) ) {
 		$i++;
-		echo "<tr>";
-		printf( "<td>%d</td>", $i );
-		printf( "<td style=\"text-align:right;\">\$ %s</td>", number_format( $rec['amount'], 2 ) );
-		printf( "<td>%s %s</td>", $rec['lastName'], $rec['firstName'] );
-		printf( "<td>%s</td>", FormatPhone( $rec['phone']) );
-		printf( "<td class=c>%s</td>", $methods[ $rec['paymentMethod'] ] );
 		$ts = strtotime( $rec['timestamp'] );
-		printf( "<td>%s</td>", date( 'j-M-Y h:i A', $ts ) );
+		$dmy = date('j-M-Y', $ts);
+		$hl = ( $today == $dmy ) ? "class=today" : "";
+		echo "<tr>";
+		printf( "<td $hl>%d</td>", $i );
+		printf( "<td $hl style=\"text-align:right;\">\$ %s</td>", number_format( $rec['amount'], 2 ) );
+		printf( "<td $hl>%s %s</td>", $rec['lastName'], $rec['firstName'] );
+		printf( "<td $hl>%s</td>", FormatPhone( $rec['phone']) );
+		printf( "<td $hl class=c>%s</td>", $methods[ $rec['paymentMethod'] ] );
+		printf( "<td $hl>%s</td>", date( 'j-M-Y h:i A', $ts ) );
 		if( $ok_to_edit ) {
-			echo "<td>";
+			echo "<td $hl>";
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
 			$jsx[] = sprintf( "setValue('id','%d')", $rec['id']);
@@ -239,6 +253,15 @@ function DisplaySpiritual() {
 	echo "<div class=CommonV2>";
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
 	
+	$jsx = array();
+	$jsx[] = "setValue('area','financial')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Financial>";
+	
+	echo "<br>";
+	echo "<input type=button onclick=\"addAction('Logout');\" value=Logout>";
+
 	DoQuery( "select * from pledges where pledgeType = $PledgeTypeSpiritual" );
 	$hist = array();
 	$other = array();
@@ -250,7 +273,7 @@ function DisplaySpiritual() {
 	
 	while( $rec = mysql_fetch_assoc( $result ) ) {
 		$str = FormatPhone( $rec['phone'] );
-		$tmp = preg_split( '/,/', $rec['pledgeIds'] );
+		$tmp = preg_split( '/,/', $rec['pledgeIds'], NULL, PREG_SPLIT_NO_EMPTY );
 		if( count( $tmp ) ) {
 			foreach( $tmp as $id ) {
 				$hist[$id]++;

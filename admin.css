@@ -26,5 +26,13 @@ body div.center table {
 
 ul {
  	margin-left: 25%;
-    text-align: left;
+   text-align: left;
+}
+
+.today {
+	background-color: #FC6;
+}
+
+.CommonV2 td.today {
+	background-color: #FC6;
 }
