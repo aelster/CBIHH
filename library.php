@@ -630,7 +630,7 @@ function SendConfirmation() {
 		}
 		
 	} else {
-		$tmp = preg_split( '/,/', $pledgeIds );
+		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
 		$j = count($tmp);
 		$j += empty( $pledgeOther ) ? 0 : 1;
 		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
@@ -670,7 +670,7 @@ function SendConfirmation() {
 		}
 		
 	} else {
-		$tmp = preg_split( '/,/', $pledgeIds );
+		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
 		$j = count($tmp);
 		$j += empty( $pledgeOther ) ? 0 : 1;
 		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
