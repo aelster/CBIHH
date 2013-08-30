@@ -1,0 +1,13 @@
+Admin:
+   Financial:
+      o Add Mail capability
+      o Make the pledge store a transaction with ID receipt
+      o Send Confirmation( ID ) allows for re-send
+      o PST/PDT time stamps
+      
+   Spiritual:
+      o Today's pledges?
+      o Edit Capability
+      
+Log entries for pledges
+Update Mail interface

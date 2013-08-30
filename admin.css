@@ -36,3 +36,12 @@ ul {
 .CommonV2 td.today {
 	background-color: #FC6;
 }
+
+.CommonV2 td.todayc {
+	background-color: #FC6;
+	text-align: center;
+}
+
+.mitzvah {
+	max-width: 600px;
+}

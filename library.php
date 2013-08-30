@@ -25,8 +25,9 @@ function DisplayFinancial() {
 		$gFunction[] = "DisplayFinancial()";
 		Logger();
 	}
-	
-	$today = date('j-M-Y');
+	$tdate = new DateTime();
+	$tdate->setTimezone( new DateTimeZone('America/Los_Angeles' ) );
+	$today = $tdate->format( 'j-M-Y' );
 	
 	$area = $_POST['area'];
 	$func = $_POST['func'];
@@ -73,42 +74,45 @@ function DisplayFinancial() {
 	
 	$methods = array( $PaymentCredit => 'Credit', $PaymentCheck => 'Check', $PaymentCall => 'Call' );
 	
+	$lf = "\n";
 	$i = 0;
 	while( $rec = mysql_fetch_assoc( $result ) ) {
 		$i++;
 		$ts = strtotime( $rec['timestamp'] );
-		$dmy = date('j-M-Y', $ts);
+		$tdate->setTimestamp($ts);
+		$dmy = $tdate->format('j-M-Y');
 		$hl = ( $today == $dmy ) ? "class=today" : "";
-		echo "<tr>";
-		printf( "<td $hl>%d</td>", $i );
-		printf( "<td $hl style=\"text-align:right;\">\$ %s</td>", number_format( $rec['amount'], 2 ) );
-		printf( "<td $hl>%s %s</td>", $rec['lastName'], $rec['firstName'] );
-		printf( "<td $hl>%s</td>", FormatPhone( $rec['phone']) );
-		printf( "<td $hl class=c>%s</td>", $methods[ $rec['paymentMethod'] ] );
-		printf( "<td $hl>%s</td>", date( 'j-M-Y h:i A', $ts ) );
+		echo "<tr>$lf";
+		printf( "<td $hl>%d</td>$lf", $i );
+		printf( "<td $hl style=\"text-align:right;\">\$ %s</td>$lf", number_format( $rec['amount'], 2 ) );
+		printf( "<td $hl>%s %s</td>$lf", $rec['lastName'], $rec['firstName'] );
+		printf( "<td $hl>%s</td>$lf", FormatPhone( $rec['phone']) );
+		printf( "<td $hl class=c>%s</td>$lf", $methods[ $rec['paymentMethod'] ] );
+#		printf( "<td $hl>%s</td>$lf", $tdate->format( 'j-M-Y h:i A') );
+		printf( "<td $hl>%s</td>$lf", date( 'j-M-Y h:i A', $ts ) );
 		if( $ok_to_edit ) {
-			echo "<td $hl>";
+			echo "<td $hl>$lf";
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
 			$jsx[] = sprintf( "setValue('id','%d')", $rec['id']);
 			$jsx[] = "addAction('Edit')";
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
-			echo "<input type=button value=Edit $js>";
+			echo "<input type=button value=Edit $js>$lf";
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
 			$jsx[] = "setValue('from','DisplayFinancial')";
 			$jsx[] = "setValue('func','delete')";
 			$jsx[] = sprintf( "setValue('id','%d')", $rec['id']);
-			$txt = sprintf( "Are you sure you want to delete %s %s's donation for \$ %s?",
+			$txt = sprintf( "Are you sure you want to delete %s %s\'s donation for \$ %s?",
 								$rec['firstName'], $rec['lastName'], number_format($rec['amount'],2));
 			$jsx[] = sprintf( "myConfirm('%s')", CVT_Str_to_Overlib($txt) );
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
-			echo "<input type=button value=Delete $js>";
-			echo "</td>";
+			echo "<input type=button value=Delete $js>$lf";
+			echo "</td>$lf";
 		}
-		echo "</tr>";
+		echo "</tr>$lf";
 	}
-	echo "</table>";
+	echo "</table>$lf";
 	echo "</div>";
 
 	if( $gTrace ) array_pop( $gFunction );
@@ -295,14 +299,14 @@ function DisplaySpiritual() {
 	echo "<ul><li>The columns are sortable by clicking on their header</li></ul>";
 	echo "<table class=sortable>";
 	echo "<tr>";
-	echo "  <th>Mitzvah</th>";
+	echo "  <th class=mitzvah>Mitzvah</th>";
 	echo "  <th># Selected</th>";
 	echo "</tr>";
 	
 	foreach( $hist as $id => $count ) {
 		if( empty( $count ) ) continue;
 		echo "<tr>";
-		printf( "<td>%s</td>", $gSpiritIDtoDesc[$id] );
+		printf( "<td class=mitzvah>%s</td>", $gSpiritIDtoDesc[$id] );
 		echo "<td class=c>";
 		$tag = number_format($count,0);
 		$str = join( '<br>', $people[$id] );
@@ -318,7 +322,7 @@ END;
 	}
 	foreach( $other as $desc => $count ) {
 		echo "<tr>";
-		printf( "<td>%s (other)</td>", $desc );
+		printf( "<td class=mitzvah>%s (other)</td>", $desc );
 		echo "<td class=c>";
 		$tag = number_format($count,0);
 		$str = $people[$desc][0];
