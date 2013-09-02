@@ -46,10 +46,10 @@ function DisplayFinancial() {
 	echo "<input type=button onclick=\"addAction('Logout');\" value=Logout>";
 
 	DoQuery( "select sum(amount) from pledges where pledgeType = $PledgeTypeFinancial" );
-	list( $total ) = mysql_fetch_array( $result );
+	list( $total ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 	
 	DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
-	list( $goal ) = mysql_fetch_array( $result );
+	list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 	
 	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
 	echo "<ul>";
@@ -76,7 +76,7 @@ function DisplayFinancial() {
 	
 	$lf = "\n";
 	$i = 0;
-	while( $rec = mysql_fetch_assoc( $result ) ) {
+	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
 		$i++;
 		$ts = strtotime( $rec['timestamp'] );
 		$tdate->setTimestamp($ts);
@@ -142,7 +142,7 @@ function DisplayGoal() {
 
 	echo "<p>Financial goal:&nbsp;&nbsp;";
 	DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
-	list( $goal ) = mysql_fetch_array( $result );
+	list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 	$tag = MakeTag( 'goal' );
 	$jsx = array();
 	$jsx[] = "setValue('area','$area')";
@@ -203,10 +203,10 @@ function DisplayMain() {
 			echo "<input type=button $js value='Reset Pledges'>";
 
 			DoQuery( "select sum(amount) from pledges where pledgeType = $PledgeTypeFinancial" );
-			list( $total ) = mysql_fetch_array( $result );
+			list( $total ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 			
 			DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
-			list( $goal ) = mysql_fetch_array( $result );
+			list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 			
 			DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
 			echo "<ul>";
@@ -214,9 +214,9 @@ function DisplayMain() {
 			printf( "<li>Total financial pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
 		
 			DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
-			$num_pledges = $gNumRows;
+			$num_pledges = $GLOBALS['mysql_numrows'];
 			$num_spirit = 0;
-			while( list( $ids, $other ) = mysql_fetch_array( $result ) ) {
+			while( list( $ids, $other ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 				$num_spirit += count( preg_split( '/,/', $ids ) );
 				if( ! empty( $other ) ) $num_spirit++;
 			}
@@ -275,7 +275,7 @@ function DisplaySpiritual() {
 		$hist[$id] = 0;
 	}
 	
-	while( $rec = mysql_fetch_assoc( $result ) ) {
+	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
 		$str = FormatPhone( $rec['phone'] );
 		$tmp = preg_split( '/,/', $rec['pledgeIds'], NULL, PREG_SPLIT_NO_EMPTY );
 		if( count( $tmp ) ) {
@@ -351,7 +351,7 @@ function GoalUpdate() {
 	
 	$goal = preg_replace( '/[^0-9]/', '', $_POST['goal'] );
 	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinGoal" );
-	if( $gNumRows ) {
+	if( $GLOBALS['mysql_numrows'] ) {
 		DoQuery( "update pledges set amount = $goal where pledgeType = $PledgeTypeFinGoal" );
 	} else {
 		DoQuery( "insert into pledges set pledgeType = $PledgeTypeFinGoal, amount = $goal" );
@@ -377,13 +377,13 @@ function LocalInit() {
 	
 	$gSpiritIDtoDesc = array();
 	DoQuery( "select id, description from spiritual" );
-	while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+	while( list( $id, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 		$gSpiritIDtoDesc[$id] = $desc;
 	}
 	
 	$gSpiritIDstats = array();
 	DoQuery( "select pledgeIds, pledgeOther from pledges" );
-	while( list( $pids, $pother ) = mysql_fetch_array( $result ) ) {
+	while( list( $pids, $pother ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 		$tmp = preg_split( '/,/', $pids );
 		foreach( $tmp as $id ) {
 			if( empty( $gSpiritIDstats[$id] ) ) $gSpiritIDstats[$id] = 0;
@@ -438,7 +438,7 @@ function PledgeEdit() {
 	$id = $_POST['id'];
 	$area = $_POST['area'];
 	DoQuery( "select * from pledges where id = '$id'" );
-	$rec = mysql_fetch_assoc( $result );
+	$rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] );
 	
 	echo "<input type=button value=Back onclick=\"setValue('from', 'PledgeEdit');addAction('Back');\">";
 	

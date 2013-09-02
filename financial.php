@@ -63,9 +63,9 @@
   <h2>5774 High Holy Day Appeal </h2>
   <?php
 DoQuery( "select sum(amount), count(pledgeType) from pledges where pledgeType = $PledgeTypeFinancial" );
-list( $total,$num ) = mysql_fetch_array( $result );
+list( $total,$num ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
-list( $goal ) = mysql_fetch_array( $result );
+list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 	
 echo "<hr>";
 echo "<div class=to_date>";
@@ -83,9 +83,9 @@ echo "<hr>";
   <div>
   <?php
   DoQuery( "select multiplier from financial order by multiplier asc" );
-  $num_per_row = $gNumRows / 3;
+  $num_per_row = $GLOBALS['mysql_numrows'] / 3;
   $i = 0;
-  while( list( $mult ) = mysql_fetch_array( $result ) ) {
+  while( list( $mult ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 	  if( $i % $num_per_row == 0 ) {
 		  echo "<table class=pledge>\n";
 	  }

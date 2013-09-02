@@ -9,16 +9,11 @@ global $gEnabled;
 global $gFrom;
 global $gFunction;
 global $gMailAdmin;
-global $gMailLive;
-global $gNumRows;
 global $gSourceCode;
 global $gSpiritIDtoDesc;
 global $gSpiritIDstats;
 global $gTrace;
 global $gUserId;
-
-global $PasswdChanged;
-global $result;
 
 $gFunction = array('index.php');
 #=====================================================

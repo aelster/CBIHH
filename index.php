@@ -1,12 +1,11 @@
 <?php
 require_once 'lib/swift_required.php';
+require_once( 'SiteLoader.php' );
+SiteLoad( 'Common' );
 
 include( 'globals.php' );
 include( 'library.php' );
 include( 'local_cbi.php' );
-
-require_once( 'SiteLoader.php' );
-SiteLoad( 'CommonV2' );
 
 $gDb = OpenDb();                # Open the MySQL database
 

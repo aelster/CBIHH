@@ -63,9 +63,9 @@
   <h2>5774 High Holy Day Appeal </h2>
   <?php
 DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
-$num = $gNumRows;
+$num = $GLOBALS['mysql_numrows'];
 $mitzvot = 0;
-while( list( $ids, $other ) = mysql_fetch_array( $result ) ) {
+while( list( $ids, $other ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 	if( ! empty( $ids ) ) {
 		$tmp = preg_split( '/,/', $ids );
 		$mitzvot += count($tmp);
@@ -94,7 +94,7 @@ echo "<hr>";
 echo "<table class=spiritTable>";
 echo "<tr><th>Torah</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualTorah" );
-while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+while( list( $id, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
 	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
 	 $id, $freq, $desc );
@@ -104,7 +104,7 @@ echo "</table>";
 echo "<table class=spiritTable>";
 echo "<tr><th>Avodah</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualAvodah" );
-while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+while( list( $id, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
 	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
 	 $id, $freq, $desc );
@@ -129,7 +129,7 @@ echo "(" . $freq . ")";
 echo "<table class=spiritTable>";
 echo "<tr><th>Gemilut Chasadim</th></tr>";
 DoQuery( "select id, description from spiritual where spiritualType = $SpiritualGemilut" );
-while( list( $id, $desc ) = mysql_fetch_array( $result ) ) {
+while( list( $id, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 	$freq = empty( $gSpiritIDstats[$id] ) ? 0 : $gSpiritIDstats[$id];
 
 	printf( "<tr><td><input type=checkbox name=spirit id=spirit_%d onClick=\"makeActive('spirit');\">(%d) %s</td></tr>",
