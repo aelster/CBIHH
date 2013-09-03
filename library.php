@@ -77,37 +77,54 @@ function DisplayFinancial() {
 	$lf = "\n";
 	$i = 0;
 	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
+		foreach( $rec as $key => $val ) {
+			$$key = $val;
+		}
 		$i++;
-		$ts = strtotime( $rec['timestamp'] );
+		$ts = strtotime( $timestamp );
 		$tdate->setTimestamp($ts);
 		$dmy = $tdate->format('j-M-Y');
 		$hl = ( $today == $dmy ) ? "class=today" : "";
 		echo "<tr>$lf";
 		printf( "<td $hl>%d</td>$lf", $i );
-		printf( "<td $hl style=\"text-align:right;\">\$ %s</td>$lf", number_format( $rec['amount'], 2 ) );
-		printf( "<td $hl>%s %s</td>$lf", $rec['lastName'], $rec['firstName'] );
-		printf( "<td $hl>%s</td>$lf", FormatPhone( $rec['phone']) );
-		printf( "<td $hl class=c>%s</td>$lf", $methods[ $rec['paymentMethod'] ] );
+		printf( "<td $hl style=\"text-align:right;\">\$ %s</td>$lf", number_format( $amount, 2 ) );
+		printf( "<td $hl>%s %s</td>$lf", $lastName, $firstName );
+		printf( "<td $hl>%s</td>$lf", FormatPhone( $phone) );
+		printf( "<td $hl class=c>%s</td>$lf", $methods[ $paymentMethod ] );
 #		printf( "<td $hl>%s</td>$lf", $tdate->format( 'j-M-Y h:i A') );
 		printf( "<td $hl>%s</td>$lf", date( 'j-M-Y h:i A', $ts ) );
 		if( $ok_to_edit ) {
 			echo "<td $hl>$lf";
+			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
-			$jsx[] = sprintf( "setValue('id','%d')", $rec['id']);
+			$jsx[] = sprintf( "setValue('id','%d')", $id);
 			$jsx[] = "addAction('Edit')";
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
 			echo "<input type=button value=Edit $js>$lf";
+			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
 			$jsx[] = "setValue('from','DisplayFinancial')";
 			$jsx[] = "setValue('func','delete')";
-			$jsx[] = sprintf( "setValue('id','%d')", $rec['id']);
-			$txt = sprintf( "Are you sure you want to delete %s %s\'s donation for \$ %s?",
-								$rec['firstName'], $rec['lastName'], number_format($rec['amount'],2));
+			$jsx[] = sprintf( "setValue('id','%d')", $id);
+			$txt = sprintf( "Are you sure you want to delete %s %s's donation for \$ %s?",
+								$firstName, $lastName, number_format($amount,2));
 			$jsx[] = sprintf( "myConfirm('%s')", CVT_Str_to_Overlib($txt) );
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
 			echo "<input type=button value=Delete $js>$lf";
+			
+			$jsx = array();
+			$jsx[] = "setValue('area','$area')";
+			$jsx[] = "setValue('from','DisplayFinancial')";
+			$jsx[] = "setValue('func','mail')";
+			$jsx[] = sprintf( "setValue('id','%d')", $id);
+			$txt = sprintf( "Are you sure you want to resend the confirmation for  %s %s's donation of \$ %s\\nmade on %s?",
+								$firstName, $lastName, number_format($amount,2), date('j-M-Y h:i A', $ts) );
+			$jsx[] = sprintf( "myConfirm('%s')", CVT_Str_to_Overlib($txt) );
+			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
+			echo "<input type=button value=Mail $js>$lf";
+			
 			echo "</td>$lf";
 		}
 		echo "</tr>$lf";
@@ -549,10 +566,14 @@ function PledgeStore() {
 		$args[] = "pledgeType = $PledgeTypeSpiritual";
 	}
 	
+	DoQuery( "start transaction" );
 	$query = "insert into pledges set " . join( ',', $args );
 	DoQuery( $query );
+	$id = mysql_insert_id();
+	DoQuery( "commit" );
 
 	if( $gTrace ) array_pop( $gFunction );
+	return $id;
 }
 
 function PledgeUpdate() {
@@ -584,142 +605,138 @@ function PledgeUpdate() {
 	} elseif( $func == 'delete' ) {
 		$query = sprintf( "delete from pledges where id = $id" );
 		DoQuery( $query );
+		
+	} elseif( $func == 'mail' ) {
+		SendConfirmation($id);
 	}
 	
 	if( $gTrace ) array_pop( $gFunction );
 }
 
-function SendConfirmation() {
+function SendConfirmation( $id ) {
 	include( 'globals.php' );
 	if( $gTrace ) {
 		$gFunction[] = "SendConfirmation()";
 		Logger();
 	}
 	
-	$post = $_POST;
-
-	$tmp = preg_split( '/\|/', $post['fields'] );
-	foreach( $tmp as $xx ) {
-		list( $key, $val ) = preg_split( '/=/', $xx );
-		$$key = $val;
+	DoQuery( "select * from pledges where `id` = $id" );
+	$rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] );
+	foreach( $rec as $key => $val ) {
+		$$key = $rec[$key];
 	}
-
-	$financial = ( $post['from'] == 'financial' ) ? 1 : 0;
-	$sfx = $gMailLive ? "" : " (gMailLive=0)";
+	$ts = strtotime($timestamp);
 	
-	$subject = "CBI " . ucfirst( $post['from'] ) . " Pledge Confirmation" . $sfx;
+	$financial = ( $pledgeType == $PledgeTypeFinancial );
+	$sfx = $GLOBALS['mail_live'] ? "" : " (TestMode)";
+	$from = $financial ? "Financial" : "Spiritual";
+	
+	$subject = "CBI $from Pledge Confirmation" . $sfx;
 	$message = Swift_Message::newInstance($subject);
 
 	$html = $text = array();
 	$cid = $message->embed(Swift_Image::fromPath('assets/CBI_ner_tamid.png'));
 
 	$html[] = "<html><head></head><body>";
-	$html[] = '<img src="' . $cid . '" alt="Image" /><br>';
-	$html[] = "Dear $firstName $lastName,<br><br>";
+	$html[] = '<img src="' . $cid . '" alt="Image" />';
+	
+	$html[] = "Dear $firstName $lastName,";
+	$text[] = "Dear $firstName $lastName,";
+
+	$html[] = "";
+	$text[] = "";
+	
 	if( $financial ) {
-		$html[] = "&nbsp;&nbsp;Thank you for your pledge of \$ " . number_format( $amount, 2 ) . ".";
-		$pmt_type = $post['paynow'];
-		switch( $pmt_type ) {
+		$html[] = "Thank you for the following pledge in support of the Congregation B'nai Israel 5774 High Holy Day Appeal:";
+		$text[] = "Thank you for the following pledge in support of the Congregation B'nai Israel 5774 High Holy Day Appeal:";
+		
+		$html[] = "";
+		$text[] = "";
+		
+		$html[] = "&nbsp;&nbsp;Amount:&nbsp;\$&nbsp;" . number_format( $amount, 2 );
+		$text[] = "  Amount: \$ " . number_format( $amount, 2 );
+		
+		$str = date( "F j, Y", $ts );
+		$html[] = "&nbsp;&nbsp;Date:&nbsp;$str";
+		$text[] = "  Date: $str";
+		
+		$str = date( "g:i:s A", $ts );
+		$html[] = "&nbsp;&nbsp;Time:&nbsp;$str";
+		$text[] = "  Time: $str";
+		
+		switch( $paymentMethod ) {
 			case $PaymentCredit:
-				$html[] = "&nbsp;We will charge your credit card on file.";
+				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Charge my credit card on file";
+				$text[] = "  Payment: Charge my credit card on file";
 				break;
 				
 			case $PaymentCheck:
-				$html[] = "&nbsp;Please send or drop off your check at your earliest convenience.";
+				$html[] = "&nbsp;&nbsp;Payment:&nbsp;I will send a check within three days";
+				$text[] = "  Payment: I will send a check within three days";
 				break;
 				
 			case $PaymentCall:
-				$html[] = "&nbsp;The office will contact you to arrange for payment.";
+				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Contact me about payment";
+				$text[] = "  Payment: Contact me about payment";
 				break;
 		}
 		
 	} else {
-		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
-		$j = count($tmp);
-		$j += empty( $pledgeOther ) ? 0 : 1;
-		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
-		$html[] = "&nbsp;&nbsp;Thank you for your pledge of the following $word:<br>";
+		$html[] = "Thank you for the following Congregation B'nai Israel 5774 High Holy Day spiritual pledge:";
+		$text[] = "Thank you for the following Congregation B'nai Israel 5774 High Holy Day spiritual pledge:";
+		
+		$html[] = "";
+		$text[] = "";
+	
 		$html[] = "<ul>";
+		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
 		if( count( $tmp ) ) {
-			foreach( $tmp as $tag ) {
-				list( $na, $id ) = preg_split( '/_/', $tag );
+			foreach( $tmp as $id ) {
 				$html[] = sprintf( "<li>%s</li>", $gSpiritIDtoDesc[$id] );
+				$text[] = sprintf( "  o %s", $gSpiritIDtoDesc[$id] );
 			}
 		}
 		if( ! empty( $pledgeOther ) ) {
 			$html[] = sprintf( "<li>%s</li>", $pledgeOther );
+			$text[] = sprintf( "  o %s", $pledgeOther );
 		}
 		$html[] = "</ul>";
 	}
 	
-	$html[] = "<br><br>";
-	$html[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
+	$html[] = "";
+	$text[] = "";
 	
-	$text[] = "Dear $firstName $lastName,\n";
+	$html[] = "L'Shanah Tova, may the new year be a meaningful one for you";
+	$text[] = "L'Shanah Tova, may the new year be a meaningful one for you";
+
+	$message->setTo( array( $email => "$firstName $lastName" ) );
+	$message->setFrom(array('cbi18@cbi18.org' => 'CBI'));
 	if( $financial ) {
-		$text[] = "  Thank you for your pledge of \$ " . number_format( $amount, 2 ) . ".";
-		$pmt_type = $post['paynow'];
-		switch( $pmt_type ) {
-			case $PaymentCredit:
-				$text[] = " We will charge your credit card on file.";
-				break;
-				
-			case $PaymentCheck:
-				$text[] = " Please send or drop off your check at your earliest convenience.";
-				break;
-				
-			case $PaymentCall:
-				$text[] = " The office will contact you to arrange for payment.";
-				break;
-		}
-		
+		$message->setBcc(array(
+						'beth@elsternet.com' => 'Beth Elster',
+						'hcoulter@cbi18.org' => 'Helene Coulter'
+						) );
 	} else {
-		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
-		$j = count($tmp);
-		$j += empty( $pledgeOther ) ? 0 : 1;
-		$word = ( $j > 1 ) ? "mitzvot" : "mitzvah";
-		$text[] = "  Thank you for your pledge of the following $word:\n";
-		$text[] = "\n";
-		if( count( $tmp ) ) {
-			foreach( $tmp as $tag ) {
-				list( $na, $id ) = preg_split( '/_/', $tag );
-				$text[] = sprintf( "  o %s\n", $gSpiritIDtoDesc[$id] );
-			}
-		}
-		if( ! empty( $pledgeOther ) ) {
-			$text[] = sprintf( "  o %s\n", $pledgeOther );
-		}
-		$text[] = "\n";
-	}
-
-	$text[] = "\n";
-	$text[] = "L'Shanah Tovah, may the new year be a meaningful one for you.";
-
-	if( $gMailLive ) {
-		$message->setTo( array( $email => "$firstName $lastName" ) );
-		$message->setFrom(array('cbi18@cbi18.org' => 'CBI'));
-		if( $financial ) {
-			$message->setBcc(array(
-							'beth@elsternet.com' => 'Beth Elster',
-							'hcoulter@cbi18.org' => 'Helene Coulter'
-							) );
-		} else {
-			$message->setBcc(array(
-							'beth@elsternet.com' => 'Beth Elster'
-							) );
-		}
-	} else {
-		$message->setTo( $gMailAdmin );
-		$message->setFrom( $gMailAdmin );
+		$message->setBcc(array(
+						'beth@elsternet.com' => 'Beth Elster'
+						) );
 	}
 
 	$message
-	->setBody( join('',$html), 'text/html' )
-	->addPart( join('',$text), 'text/plain' )
+	->setBody( join('<br>',$html), 'text/html' )
+	->addPart( join('\n',$text), 'text/plain' )
 	;
 
 	MyMail($message);
 
+	echo "<pre>";
+	foreach( $html as $str ) {
+		printf( "html:[%s]\n", $str );
+	}
+	foreach( $text as $str ) {
+			printf ( "text:[%s]\n", $str );
+	}
+	echo "</pre>";
 	if( $gTrace ) array_pop( $gFunction );
 }
 

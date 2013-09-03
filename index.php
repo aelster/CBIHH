@@ -55,8 +55,8 @@ if( $action == "pledge" ) {
 	include( "spiritual.php" );
 
 } elseif( $action == "paynow" ) {
-	PledgeStore();
-	SendConfirmation();
+	$id = PledgeStore();
+	SendConfirmation( $id );
 	include( "thank_you.php" );
 	
 } elseif( $action == "paypal" ) {
