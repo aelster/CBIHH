@@ -640,67 +640,82 @@ function SendConfirmation( $id ) {
 	$html[] = "<html><head></head><body>";
 	$html[] = '<img src="' . $cid . '" alt="Image" />';
 	
+	$html[] = "Congregation B'nai Israel";
+	$text[] = "Congregation B'nai Israel";
+	
+	$html[] = "5774 High Holy Day Appeal";
+	$text[] = "5774 High Holy Day Appeal";
+
+	$html[] = "";
+	$text[] = "";
+	
 	$html[] = "Dear $firstName $lastName,";
 	$text[] = "Dear $firstName $lastName,";
 
 	$html[] = "";
 	$text[] = "";
 	
+	$html[] = "Thank you for the following pledge:";
+	$text[] = "Thank you for the following pledge:";
+		
+	$html[] = "";
+	$text[] = "";
+	
 	if( $financial ) {
-		$html[] = "Thank you for the following pledge in support of the Congregation B'nai Israel 5774 High Holy Day Appeal:";
-		$text[] = "Thank you for the following pledge in support of the Congregation B'nai Israel 5774 High Holy Day Appeal:";
+		$list = array();
 		
-		$html[] = "";
-		$text[] = "";
-		
-		$html[] = "&nbsp;&nbsp;Amount:&nbsp;\$&nbsp;" . number_format( $amount, 2 );
+		$list[] = "<table>";
+		$list[] = "<tr><td>Amount:</td><td>\$" . number_format($amount,2) . "</td></tr>";
 		$text[] = "  Amount: \$ " . number_format( $amount, 2 );
 		
 		$str = date( "F j, Y", $ts );
-		$html[] = "&nbsp;&nbsp;Date:&nbsp;$str";
+		$list[] = "<tr><td>Date:</td><td>$str</td></tr>";
 		$text[] = "  Date: $str";
 		
 		$str = date( "g:i:s A", $ts );
-		$html[] = "&nbsp;&nbsp;Time:&nbsp;$str";
+		$list[] = "<tr><td>Time:</td><td>$str</td></tr>";
 		$text[] = "  Time: $str";
 		
 		switch( $paymentMethod ) {
 			case $PaymentCredit:
-				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Charge my credit card on file";
+#				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Charge my credit card on file";
+				$list[] = "<tr><td>Payment:</td><td>Charge my credit card on file</td></tr>";
 				$text[] = "  Payment: Charge my credit card on file";
 				break;
 				
 			case $PaymentCheck:
-				$html[] = "&nbsp;&nbsp;Payment:&nbsp;I will send a check within three days";
+#				$html[] = "&nbsp;&nbsp;Payment:&nbsp;I will send a check within three days";
+				$list[] = "<tr><td>Payment:</td><td>I will send a check within three days</td></tr>";
 				$text[] = "  Payment: I will send a check within three days";
 				break;
 				
 			case $PaymentCall:
-				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Contact me about payment";
+#				$html[] = "&nbsp;&nbsp;Payment:&nbsp;Contact me about payment";
+				$list[] = "<tr><td>Payment:</td><td>Contact me about payment</td></tr>";
 				$text[] = "  Payment: Contact me about payment";
 				break;
 		}
+		$list[] = "</table>";
+		$html[] = join( '', $list );
 		
 	} else {
-		$html[] = "Thank you for the following Congregation B'nai Israel 5774 High Holy Day spiritual pledge:";
-		$text[] = "Thank you for the following Congregation B'nai Israel 5774 High Holy Day spiritual pledge:";
-		
-		$html[] = "";
 		$text[] = "";
 	
-		$html[] = "<ul>";
+		$list = array();
+		$list[] = "<ul>";
 		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
 		if( count( $tmp ) ) {
 			foreach( $tmp as $id ) {
-				$html[] = sprintf( "<li>%s</li>", $gSpiritIDtoDesc[$id] );
+				$list[] = sprintf( "<li>%s</li>", $gSpiritIDtoDesc[$id] );
 				$text[] = sprintf( "  o %s", $gSpiritIDtoDesc[$id] );
 			}
 		}
 		if( ! empty( $pledgeOther ) ) {
-			$html[] = sprintf( "<li>%s</li>", $pledgeOther );
+			$list[] = sprintf( "<li>%s</li>", $pledgeOther );
 			$text[] = sprintf( "  o %s", $pledgeOther );
 		}
-		$html[] = "</ul>";
+		$list[] = "</ul>";
+		$html[] = join( '', $list );
 	}
 	
 	$html[] = "";
@@ -729,14 +744,6 @@ function SendConfirmation( $id ) {
 
 	MyMail($message);
 
-	echo "<pre>";
-	foreach( $html as $str ) {
-		printf( "html:[%s]\n", $str );
-	}
-	foreach( $text as $str ) {
-			printf ( "text:[%s]\n", $str );
-	}
-	echo "</pre>";
 	if( $gTrace ) array_pop( $gFunction );
 }
 
