@@ -15,6 +15,11 @@ global $gSpiritIDstats;
 global $gTrace;
 global $gUserId;
 
+global $gSiteEnabled;
+
+global $site_enabled;
+global $site_send_confirms;
+
 $gFunction = array('index.php');
 #=====================================================
 global $PaymentCredit;

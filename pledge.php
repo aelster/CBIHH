@@ -53,8 +53,10 @@
       <ul id="MenuBar1" class="MenuBarHorizontal">
           <li><a href="http://cbi18.org/">CBI Home</a></li>
           <li><a onclick="addAction('pledge');">Pledge Home</a></li>
+          <?php if( $site_enabled ) { ?>
           <li><a onclick="addAction('financial');">Financial Pledge</a></li>
           <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+          <?php } ?>
       </ul>
   <!-- end .MenuBar --></div>
   <div id="content">
@@ -75,10 +77,18 @@
       </div>
       <br />
     <div id="bottom_buttons">
-        <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />
-        <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />
+<?php
+if( $site_enabled ) {
+?>
+  <input class=buttonOk type=button onClick="addAction('financial');" value="Make a Financial Pledge" />
+  <input class=buttonOk type=button onClick="addAction('spiritual');" value="Make a Spiritual Pledge" />
+<?php
+} else {
+  echo "The pledge site is currently disabled.  Please check back in a few minutes";  
+}
+?>
     </div>
-    <!-- end .content -->
+  <!-- end .content -->
   </div>
   <!-- InstanceEndEditable -->
   <!-- end .content --></div>

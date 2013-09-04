@@ -82,7 +82,8 @@ function DisplayFinancial() {
 		}
 		$i++;
 		$ts = strtotime( $timestamp );
-		$tdate->setTimestamp($ts);
+		$tdate = new DateTime("@$ts");
+#		$tdate->setTimestamp($ts);
 		$dmy = $tdate->format('j-M-Y');
 		$hl = ( $today == $dmy ) ? "class=today" : "";
 		echo "<tr>$lf";
@@ -619,6 +620,8 @@ function SendConfirmation( $id ) {
 		$gFunction[] = "SendConfirmation()";
 		Logger();
 	}
+
+	if( ! $site_send_confirms ) return;
 	
 	DoQuery( "select * from pledges where `id` = $id" );
 	$rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] );

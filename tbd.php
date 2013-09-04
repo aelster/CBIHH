@@ -55,8 +55,10 @@
       <ul id="MenuBar1" class="MenuBarHorizontal">
           <li><a href="http://cbi18.org/">CBI Home</a></li>
           <li><a onclick="addAction('pledge');">Pledge Home</a></li>
+          <?php if( $site_enabled ) { ?>
           <li><a onclick="addAction('financial');">Financial Pledge</a></li>
           <li><a onclick="addAction('spiritual');">Spiritual Pledge</a></li>
+          <?php } ?>
       </ul>
   <!-- end .MenuBar --></div>
   <div id="content">
