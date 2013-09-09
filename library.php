@@ -25,9 +25,12 @@ function DisplayFinancial() {
 		$gFunction[] = "DisplayFinancial()";
 		Logger();
 	}
-	$tdate = new DateTime();
-	$tdate->setTimezone( new DateTimeZone('America/Los_Angeles' ) );
-	$today = $tdate->format( 'j-M-Y' );
+	
+	$date_server = new DateTime( '2000-01-01' );
+	$date_calif = new DateTime( '2000-01-01', new DateTimeZone('America/Los_Angeles'));
+	$time_offset = $date_server->format('U') - $date_calif->format('U');
+	$ts = time() + $time_offset;
+	$today = date('j-M-Y', $ts );
 	
 	$area = $_POST['area'];
 	$func = $_POST['func'];
@@ -81,10 +84,8 @@ function DisplayFinancial() {
 			$$key = $val;
 		}
 		$i++;
-		$ts = strtotime( $timestamp );
-		$tdate = new DateTime("@$ts");
-#		$tdate->setTimestamp($ts);
-		$dmy = $tdate->format('j-M-Y');
+		$ts = strtotime( $timestamp ) + $time_offset;
+		$dmy = date('j-M-Y',$ts);
 		$hl = ( $today == $dmy ) ? "class=today" : "";
 		echo "<tr>$lf";
 		printf( "<td $hl>%d</td>$lf", $i );
@@ -93,16 +94,16 @@ function DisplayFinancial() {
 		printf( "<td $hl>%s</td>$lf", FormatPhone( $phone) );
 		printf( "<td $hl class=c>%s</td>$lf", $methods[ $paymentMethod ] );
 #		printf( "<td $hl>%s</td>$lf", $tdate->format( 'j-M-Y h:i A') );
-		printf( "<td $hl>%s</td>$lf", date( 'j-M-Y h:i A', $ts ) );
+		printf( "<td sorttable_customkey=$ts $hl>%s</td>$lf", date( 'j-M-Y h:i A', $ts ) );
 		if( $ok_to_edit ) {
 			echo "<td $hl>$lf";
 			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
-			$jsx[] = sprintf( "setValue('id','%d')", $id);
+			$jsx[] = sprintf( "setValue')", $id);
 			$jsx[] = "addAction('Edit')";
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
-			echo "<input type=button value=Edit $js>$lf";
+			echo "<input type=button value=Edit ('id','%d$js>$lf";
 			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";

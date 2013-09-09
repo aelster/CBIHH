@@ -1,7 +1,4 @@
-Admin:
-   Financial:
-      o PST/PDT time stamps
-      
+Admin:      
    Spiritual:
       o Today's pledges?
       o Edit Capability
