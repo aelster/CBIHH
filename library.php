@@ -200,7 +200,17 @@ function DisplayMain() {
 	} elseif( $func == 'privileges' ) {
 		UserManager( 'privileges' );
 		
+	} elseif( $func == 'source' ) {
+		SourceDisplay();
+		
 	} else {
+		printf( "User: %s<br>", $GLOBALS['gUserName'] );
+		if( UserManager( 'authorized', 'control' ) ) {
+			echo "<div class=control>";
+			echo "<input type=button onclick=\"setValue('func','source');addAction('Main');\" value=\"Source\">";
+			echo "</div>";
+		}
+		
 		if( UserManager( 'authorized', 'admin' ) ) {
 			echo "<div class=admin>";
 			echo "<h3>Admin features</h3>";

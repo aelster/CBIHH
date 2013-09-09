@@ -22,7 +22,7 @@
   	<div id="AboveBarLeft">
 	  <div id="Logo">
 		<a href="http://www.cbi18.org" style="background-image:none; width:auto; height:auto;">
-        	<img src="http://www.cbi18.org/images/CBI_logo.png" alt="Congregation B&#039;nai Israel" />
+        	<img src="../assets/CBI_logo.png" alt="Congregation B&#039;nai Israel" />
         </a>
       <!-- .end Logo --></div>
    <!-- .end AboveBarLeft --></div>
