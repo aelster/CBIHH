@@ -155,7 +155,7 @@ if( $gFrom == 'financial' ) {
         <tr>
           <td><label>
             <input type="radio" name="paynow" value=$PaymentCheck onClick="makeActive('paynow');" />
-            I will send a check within three days</label></td>
+            I will send a check to the office</label></td>
         </tr>
         <tr>
           <td><label>

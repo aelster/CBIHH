@@ -888,8 +888,8 @@ function SendConfirmation( $id ) {
 				
 			case $PaymentCheck:
 #				$html[] = "&nbsp;&nbsp;Payment:&nbsp;I will send a check within three days";
-				$list[] = "<tr><td>Payment:</td><td>I will send a check within three days</td></tr>";
-				$text[] = "  Payment: I will send a check within three days";
+				$list[] = "<tr><td>Payment:</td><td>I will send a check to the office</td></tr>";
+				$text[] = "  Payment: I will send a check to the office";
 				break;
 				
 			case $PaymentCall:
