@@ -33,6 +33,14 @@ switch( $gAction )
 		if( $gFrom == "UserReleaseNotes" ) { $gAction = "Update"; }
 		break;
 	
+	case( 'Download'):
+		LocalInit();
+		$area = $_POST['area'];
+		if( $area == "spiritual" ) {
+			ExcelSpiritual();
+		}
+		break;
+	
 	default:
 		if( $gFrom == "UserFeatures" ) { $gAction = "Update"; }
 		if( $gFrom == "UserManager" ) { $gAction = "Update"; }

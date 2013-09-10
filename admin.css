@@ -42,6 +42,10 @@ ul {
 	text-align: center;
 }
 
-.mitzvah {
-	max-width: 600px;
+th.mitzvah {
+	max-width: 300px;
+}
+
+td.mitzvah {
+	max-width: 300px;
 }

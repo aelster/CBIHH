@@ -11,6 +11,7 @@ global $gFunction;
 global $gMailAdmin;
 global $gSourceCode;
 global $gSpiritIDtoDesc;
+global $gSpiritIDtoType;
 global $gSpiritIDstats;
 global $gTrace;
 global $gUserId;

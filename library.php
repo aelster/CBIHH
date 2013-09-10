@@ -22,7 +22,7 @@ function CleanString ($data) {
 function DisplayFinancial() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "DisplayFinancial()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -37,7 +37,14 @@ function DisplayFinancial() {
 	
 	$ok_to_edit = UserManager( 'authorized', 'admin' );
 	echo "<div class=CommonV2>";
+
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+
+	$jsx = array();
+	$jsx[] = "setValue('area','financial')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Refresh>";
 	
 	$jsx = array();
 	$jsx[] = "setValue('area','spiritual')";
@@ -53,12 +60,14 @@ function DisplayFinancial() {
 	
 	DoQuery( "select amount from pledges where pledgeType = $PledgeTypeFinGoal" );
 	list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
-	
-	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
+#	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
+	DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by timestamp desc" );
+	$num_pledges = $GLOBALS['mysql_numrows'];
 	echo "<ul>";
 	echo "<li>The columns are sortable by clicking on their header</li>";
 	$x = $total * 100.0 / $goal;
-	printf( "<li>Total pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
+	printf( "<li>%d pledges: \$ %s ( %d %% of \$ %s goal)</li>",
+			 $num_pledges, number_format( $total ), intval($x), number_format( $goal ) );
 	echo "<li><span class=today>Highlighted pledges were made today ($today)</span></li>";
 	echo "</ul>";
 	echo "<div class=CommonV2>";
@@ -100,10 +109,10 @@ function DisplayFinancial() {
 			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
-			$jsx[] = sprintf( "setValue')", $id);
+			$jsx[] = sprintf( "setValue('id','%d')", $id);
 			$jsx[] = "addAction('Edit')";
 			$js = sprintf( "onclick=\"%s\"", join(';',$jsx) );
-			echo "<input type=button value=Edit ('id','%d$js>$lf";
+			echo "<input type=button value=Edit $js>$lf";
 			
 			$jsx = array();
 			$jsx[] = "setValue('area','$area')";
@@ -140,7 +149,7 @@ function DisplayFinancial() {
 function DisplayGoal() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "DisplayGoal()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -179,7 +188,7 @@ function DisplayGoal() {
 function DisplayMain() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "DisplayMain()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -190,7 +199,7 @@ function DisplayMain() {
 		DisplayFinancial();
 		
 	} elseif( $area == 'spiritual' ) {
-		DisplaySpiritual();
+		DisplaySpiritual2();
 		
 	} elseif( $area == 'goal' ) {
 		DisplayGoal();
@@ -208,13 +217,16 @@ function DisplayMain() {
 		printf( "User: %s<br>", $GLOBALS['gUserName'] );
 		if( UserManager( 'authorized', 'control' ) ) {
 			echo "<div class=control>";
+			echo "<h3>Control User Features</h3>";
 			echo "<input type=button onclick=\"setValue('func','source');addAction('Main');\" value=\"Source\">";
 			echo "</div>";
 		}
 		
 		if( UserManager( 'authorized', 'admin' ) ) {
 			echo "<div class=admin>";
-			echo "<h3>Admin features</h3>";
+			echo "<h3>Admin User Features</h3>";
+			
+			echo "<input type=button onclick=\"setValue('func','Back');addAction('Main');\" value=Refresh>";
 			echo "<input type=button onclick=\"setValue('func','users');addAction('Main');\" value=Users>";
 			echo "<input type=button onclick=\"setValue('func','privileges');addAction('Main');\" value=Privileges>";
 
@@ -238,9 +250,11 @@ function DisplayMain() {
 			list( $goal ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
 			
 			DoQuery( "select * from pledges where pledgeType = $PledgeTypeFinancial order by amount desc, lastName asc" );
+			$num_pledges = $GLOBALS['mysql_numrows'];
 			echo "<ul>";
 			$x = $total * 100.0 / $goal;
-			printf( "<li>Total financial pledges: \$ %s ( %d %% of \$ %s goal)</li>", number_format( $total ), intval($x), number_format( $goal ) );
+			printf( "<li>Total financial pledges: %d (\$ %s or %d %% of \$ %s goal )</li>",
+					$num_pledges, number_format( $total ), intval($x), number_format( $goal ) );
 		
 			DoQuery( "select pledgeIds, pledgeOther from pledges where pledgeType = $PledgeTypeSpiritual" );
 			$num_pledges = $GLOBALS['mysql_numrows'];
@@ -249,7 +263,7 @@ function DisplayMain() {
 				$num_spirit += count( preg_split( '/,/', $ids ) );
 				if( ! empty( $other ) ) $num_spirit++;
 			}
-			printf( "<li>Total spiritual pledegs: %d ( %d mitzvot )</li>", $num_pledges, $num_spirit );
+			printf( "<li>Total spiritual pledges: %d ( %d mitzvot )</li>", $num_pledges, $num_spirit );
 			echo "</ul>";
 
 			echo "</div>";
@@ -277,14 +291,21 @@ function DisplayMain() {
 function DisplaySpiritual() {
 	include( 'globals.php');
 	if( $gTrace ) {
-		$gFunction[] = "DisplaySpiritual()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 
 	$func = $_POST['func'];
 	
 	echo "<div class=CommonV2>";
+	
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+	
+	$jsx = array();
+	$jsx[] = "setValue('area','spiritual')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Refresh>";
 	
 	$jsx = array();
 	$jsx[] = "setValue('area','financial')";
@@ -371,10 +392,173 @@ END;
 	if( $gTrace ) array_pop( $gFunction );
 }
 
+function DisplaySpiritual2() {
+	include( 'globals.php');
+	if( $gTrace ) {
+		$gFunction[] = __FUNCTION__;
+		Logger();
+	}
+
+	$func = $_POST['func'];
+	
+	echo "<div class=CommonV2>";
+	
+	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
+	
+	$jsx = array();
+	$jsx[] = "setValue('area','spiritual')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Refresh>";
+	
+	$jsx = array();
+	$jsx[] = "setValue('area','spiritual')";
+	$jsx[] = "addAction('Download')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Download>";
+	
+	$jsx = array();
+	$jsx[] = "setValue('area','financial')";
+	$jsx[] = "addAction('Main')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Financial>";
+	
+	echo "<br>";
+	echo "<input type=button onclick=\"addAction('Logout');\" value=Logout>";
+
+	echo "<ul><li>The columns are sortable by clicking on their header</li></ul>";
+	
+	$lf = "\n";
+	echo "<table class=sortable>$lf";
+	echo "<tr>$lf";
+	echo "  <th>#</th>$lf";
+	echo "  <th>Category</th>$lf";
+	echo "  <th class=mitzvah>Mitzvah</th>$lf";
+	echo "  <th>Name</th>$lf";
+	echo "  <th>Phone</th>$lf";
+	echo "  <th>E-mail</th>$lf";
+	echo "  <th>Action</th>$lf";
+	echo "</tr>$lf";
+	
+	DoQuery( "select * from pledges where pledgeType = $PledgeTypeSpiritual order by lastName asc, firstName asc" );
+	$i = 0;
+	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
+		$tmp = preg_split( '/,/', $rec['pledgeIds'], NULL, PREG_SPLIT_NO_EMPTY );
+		$str = FormatPhone( $rec['phone'] );
+		if( count( $tmp ) ) {
+			foreach( $tmp as $id ) {
+				$i++;
+				echo "<tr>$lf";
+				echo "  <td>$i</td>$lf";
+				switch( $gSpiritIDtoType[$id] ) {
+					case( $SpiritualTorah ):
+						$type = "Torah";
+						break;
+					case( $SpiritualAvodah ):
+						$type = "Avodah";
+						break;
+					case( $SpiritualGemilut ):
+						$type = "Gemilut";
+						break;
+				}
+				echo "  <td>$type</td>$lf";
+				echo "  <td class=mitzvah>" . $gSpiritIDtoDesc[$id] . "</td>$lf";
+				printf( "  <td>%s, %s</td>$lf", $rec['lastName'], $rec['firstName'] );
+				echo "  <td>$str</td>$lf";
+				echo "  <td>" . $rec['email'] . "</td>$lf";
+				echo "  <td>&nbsp;</td>$lf";
+				echo "</tr>$lf";
+			}
+		}
+		if( ! empty( $rec['pledgeOther'] ) ) {
+			$desc = $rec['pledgeOther'];
+			$i++;
+			echo "<tr>$lf";
+			echo "  <td>$i</td>$lf";
+			echo "  <td>Other</td>$lf";
+			echo "  <td class=mitzvah>$desc</td>$lf";
+			printf( "  <td>%s, %s</td>$lf", $rec['lastName'], $rec['firstName'] );
+			echo "  <td>$str</td>$lf";
+			echo "  <td>" . $rec['email'] . "</td>$lf";
+			echo "  <td>&nbsp;</td>$lf";
+			echo "</tr>$lf";
+		}
+	}
+
+	echo "</table>$lf";
+	echo "</div>$lf";
+		
+	if( $gTrace ) array_pop( $gFunction );
+}
+
+function ExcelSpiritual() {
+	include( 'globals.php' );
+	if( $gTrace ) {
+		$gFunction[] = __FUNCTION__;
+		Logger();
+	}
+	header("Content-type: application/csv");
+	header("Content-Disposition: attachment;Filename=spiritual.csv");
+
+	$body = array();
+	$line = array( '"#"','"Category"','"Mitzvah"', '"Name"', '"Phone"', '"E-Mail"' );
+	$body[] = join( ',',$line );
+	
+	DoQuery( "select * from pledges where pledgeType = $PledgeTypeSpiritual order by lastName asc, firstName asc" );
+	$i = 0;
+	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
+		$tmp = preg_split( '/,/', $rec['pledgeIds'], NULL, PREG_SPLIT_NO_EMPTY );
+		$name = sprintf( "%s, %s", $rec['lastName'], $rec['firstName'] );
+		$str = FormatPhone( $rec['phone'] );
+		if( count( $tmp ) ) {
+			foreach( $tmp as $id ) {
+				$i++;
+				$line = array();
+				$line[] = $i;
+				switch( $gSpiritIDtoType[$id] ) {
+					case( $SpiritualTorah ):
+						$type = "Torah";
+						break;
+					case( $SpiritualAvodah ):
+						$type = "Avodah";
+						break;
+					case( $SpiritualGemilut ):
+						$type = "Gemilut";
+						break;
+				}
+				$line[] = '"' . $type . '"';
+				$line[] = '"' . $gSpiritIDtoDesc[$id] . '"';
+				$line[] = '"' . $name . '"';
+				$line[] = '"' . $str . '"';
+				$line[] = '"' . $rec['email'] . '"';
+				$body[] = join(',',$line);
+			}
+		}
+		if( ! empty( $rec['pledgeOther'] ) ) {
+			$desc = $rec['pledgeOther'];
+			$i++;
+			$line = array();
+			$line[] = $i;
+			$type = "Other";
+			$line[] = '"' . $type . '"';
+			$line[] = '"' . $desc . '"';
+			$line[] = '"' . $name . '"';
+			$line[] = '"' . $str . '"';
+			$line[] = '"' . $rec['email'] . '"';
+			$body[] = join(',',$line);
+		}
+	}
+
+	echo join("\n", $body );
+	exit;
+	
+	if( $gTrace ) array_pop( $gFunction );	
+}
+
 function GoalUpdate() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "GoalUpdate()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -405,9 +589,11 @@ function LocalInit() {
 	$gSourceCode = $_SERVER['REQUEST_URI'];
 	
 	$gSpiritIDtoDesc = array();
-	DoQuery( "select id, description from spiritual" );
-	while( list( $id, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
+	$gSpiritIDtoType = array();
+	DoQuery( "select id, spiritualType, description from spiritual" );
+	while( list( $id, $type, $desc ) = mysql_fetch_array( $GLOBALS['mysql_result'] ) ) {
 		$gSpiritIDtoDesc[$id] = $desc;
+		$gSpiritIDtoType[$id] = $type;
 	}
 	
 	$gSpiritIDstats = array();
@@ -429,7 +615,7 @@ function LocalInit() {
 function PayPal() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "PayPal()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -460,7 +646,7 @@ END;
 function PledgeEdit() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "PledgeEdit()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -542,7 +728,7 @@ function PledgeEdit() {
 function PledgeStore() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "PledgeStore()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -591,7 +777,7 @@ function PledgeStore() {
 function PledgeUpdate() {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "PledgeUpdate()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 	
@@ -628,7 +814,7 @@ function PledgeUpdate() {
 function SendConfirmation( $id ) {
 	include( 'globals.php' );
 	if( $gTrace ) {
-		$gFunction[] = "SendConfirmation()";
+		$gFunction[] = __FUNCTION__;
 		Logger();
 	}
 
@@ -639,7 +825,10 @@ function SendConfirmation( $id ) {
 	foreach( $rec as $key => $val ) {
 		$$key = $rec[$key];
 	}
-	$ts = strtotime($timestamp);
+	$date_server = new DateTime( '2000-01-01' );
+	$date_calif = new DateTime( '2000-01-01', new DateTimeZone('America/Los_Angeles'));
+	$time_offset = $date_server->format('U') - $date_calif->format('U');
+	$ts = strtotime($timestamp) + $time_offset;
 	
 	$financial = ( $pledgeType == $PledgeTypeFinancial );
 	$sfx = $GLOBALS['mail_live'] ? "" : " (TestMode)";
