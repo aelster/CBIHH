@@ -20,6 +20,7 @@ global $gSiteEnabled;
 
 global $site_enabled;
 global $site_send_confirms;
+global $time_offset;
 
 $gFunction = array('index.php');
 #=====================================================

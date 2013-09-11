@@ -38,6 +38,8 @@ switch( $gAction )
 		$area = $_POST['area'];
 		if( $area == "spiritual" ) {
 			ExcelSpiritual();
+		} elseif( $area == "financial" ) {
+			ExcelFinancial();
 		}
 		break;
 	
@@ -74,8 +76,19 @@ switch( $gAction ) {
       UserManager('verify');
       break;
 
-   case( 'Update' ):
+   case( 'Main' ):
+		$func = $_POST['func'];
+		if( $func == "backup" ) {
+			exec( "perl /home/cbi18/site/my_backup.pl", $out );
+		}
+		break;
+	
+	case( 'Update' ):
       if( $gFrom == "DisplayFinancial" ) {
+         PledgeUpdate();
+         $gAction = 'Main';
+         
+		} elseif( $gFrom == "DisplaySpiritual" ) {
          PledgeUpdate();
          $gAction = 'Main';
          
