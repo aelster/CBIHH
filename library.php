@@ -32,7 +32,7 @@ function DisplayFinancial() {
 	$area = $_POST['area'];
 	$func = $_POST['func'];
 	
-	$ok_to_edit = UserManager( 'authorized', 'admin' );
+	$ok_to_edit = UserManager( 'authorized', 'office' );
 	
 	echo "<div class=CommonV2>";
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
@@ -304,7 +304,7 @@ function DisplaySpiritual() {
 	$area = $_POST['area'];
 	$func = __FUNCTION__;
 	
-	$ok_to_edit = UserManager( 'authorized', 'admin' );
+	$ok_to_edit = UserManager( 'authorized', 'office' );
 
 	echo "<div class=CommonV2>";	
 	echo "<input type=button value=Back onclick=\"setValue('from', '$func');addAction('Back');\">";
