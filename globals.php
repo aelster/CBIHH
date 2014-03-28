@@ -1,5 +1,10 @@
 <?php
-
+global $mail_live;
+#=====================================================
+global $mysql_last_id;
+global $mysql_numrows;
+global $mysql_result;
+#=====================================================
 global $gAccessLevel;
 global $gAction;
 global $gActive;

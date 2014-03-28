@@ -1145,8 +1145,9 @@ function SendReminders() {
 	$sfx = $GLOBALS['mail_live'] ? "" : " (TestMode)";
 	$from = $financial ? "Financial" : "Spiritual";
 	
-	DoQuery( "select * from pledges where `pledgeType` = $PledgeTypeSpiritual and amount = 0" );
-	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
+	DoQuery( "select * from pledges where `pledgeType` = $PledgeTypeSpiritual and `amount` = 0" );
+	$outer = $mysql_result;
+	while( $rec = mysql_fetch_assoc( $outer ) ) {
 		foreach( $rec as $key => $val ) {
 			$$key = $rec[$key];
 		}
@@ -1226,7 +1227,7 @@ function SendReminders() {
 	
 		MyMail($message);
 		
-		DoQuery( "update pledges set amount = 1 where id = $id" );
+		DoQuery( "update pledges set `amount` = 1 where `id` = $id" );
 	}
 
 	if( $gTrace ) array_pop( $gFunction );
