@@ -83,6 +83,11 @@ switch( $gAction ) {
 		}
 		break;
 	
+	case( 'Reminders' ):
+		SendReminders();
+		$gAction = 'Main';
+		break;
+	
 	case( 'Update' ):
       if( $gFrom == "DisplayFinancial" ) {
          PledgeUpdate();

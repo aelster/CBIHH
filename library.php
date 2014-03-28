@@ -322,6 +322,12 @@ function DisplaySpiritual() {
 	echo "<input type=button $js value=Download>";
 	
 	$jsx = array();
+	$jsx[] = "setValue('area','spiritual')";
+	$jsx[] = "addAction('Reminders')";
+	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
+	echo "<input type=button $js value=Reminders>";
+	
+	$jsx = array();
 	$jsx[] = "setValue('area','financial')";
 	$jsx[] = "addAction('Main')";
 	$js = sprintf( "onClick=\"%s\"", join(';',$jsx) );
@@ -1122,6 +1128,106 @@ function SendConfirmation( $id ) {
 	;
 
 	MyMail($message);
+
+	if( $gTrace ) array_pop( $gFunction );
+}
+
+function SendReminders() {
+	include( 'globals.php' );
+	if( $gTrace ) {
+		$gFunction[] = __FUNCTION__;
+		Logger();
+	}
+
+	if( ! $site_send_confirms ) return;
+	
+	$financial = 0;
+	$sfx = $GLOBALS['mail_live'] ? "" : " (TestMode)";
+	$from = $financial ? "Financial" : "Spiritual";
+	
+	DoQuery( "select * from pledges where `pledgeType` = $PledgeTypeSpiritual and amount = 0" );
+	while( $rec = mysql_fetch_assoc( $GLOBALS['mysql_result'] ) ) {
+		foreach( $rec as $key => $val ) {
+			$$key = $rec[$key];
+		}
+		$ts = strtotime($timestamp) + $time_offset;
+	
+		$subject = "CBI $from Pledge Confirmation" . $sfx;
+		$message = Swift_Message::newInstance($subject);
+	
+		$html = $text = array();
+		$cid = $message->embed(Swift_Image::fromPath('assets/CBI_ner_tamid.png'));
+	
+		$html[] = "<html><head></head><body>";
+		$html[] = '<img src="' . $cid . '" alt="Image" />';
+		
+		$html[] = "Congregation B'nai Israel";
+		$text[] = "Congregation B'nai Israel";
+		
+		$html[] = "5774 High Holy Day Appeal";
+		$text[] = "5774 High Holy Day Appeal";
+	
+		$html[] = "";
+		$text[] = "";
+		
+		$html[] = "Dear $firstName,";
+		$text[] = "Dear $firstName,";
+	
+		$html[] = "";
+		$text[] = "";
+		
+		$tmp = preg_split( '/,/', $pledgeIds, NULL, PREG_SPLIT_NO_EMPTY );
+		$num_pledges = count( $tmp );
+		$str_pledges = ( 1 < $num_pledges ) ? "pledges" : "pledge";
+		$str_item = ( 1 < $num_pledges ) ? "them" : "it";
+
+		$html[] = "At High Holy Day time you made the following spiritual $str_pledges:";
+		$text[] = "At High Holy Day time you made the following spiritual $str_pledges:";
+			
+		$text[] = "";
+			
+		$list = array();
+		$list[] = "<ul>";
+		if( count( $tmp ) ) {
+			foreach( $tmp as $id ) {
+				$list[] = sprintf( "<li>%s</li>", $gSpiritIDtoDesc[$id] );
+				$text[] = sprintf( "  o %s", $gSpiritIDtoDesc[$id] );
+			}
+		}
+		if( ! empty( $pledgeOther ) ) {
+			$list[] = sprintf( "<li>%s</li>", $pledgeOther );
+			$text[] = sprintf( "  o %s", $pledgeOther );
+		}
+		$list[] = "</ul>";
+		$html[] = join( '', $list );
+
+		$html[] = "Now that we've reached the halfway point in the year, I'm checking in to find out how you're doing. If you've fulfilled your $str_pledges let me know if you found $str_item meaningful, and if you haven't yet fulfilled your $str_pledges let me know how CBI can help.  Any comments are welcome.";
+		$text[] = "Now that we've reached the halfway point in the year, I'm checking in to find out how you're doing. If you've fulfilled your $str_pledges let me know if you found $str_item meaningful, and if you haven't yet fulfilled your $str_pledges let me know how CBI can help.  Any comments are welcome.";
+
+		$html[] = "";
+		$text[] = "";
+		
+		$html[] = "Thank you,";
+		$text[] = "Thank you,";
+		
+		$html[] = "Beth Elster";
+		$text[] = "Beth Elster";
+		
+		$message->setTo( array( $email => "$firstName $lastName" ) );
+		$message->setFrom(array('cbi18@cbi18.org' => 'CBI'));
+		$message->setBcc(array(
+							'beth@elsternet.com' => 'Beth Elster'
+							) );
+
+		$message
+		->setBody( join('<br>',$html), 'text/html' )
+		->addPart( join('\n',$text), 'text/plain' )
+		;
+	
+		MyMail($message);
+		
+		DoQuery( "update pledges set amount = 1 where id = $id" );
+	}
 
 	if( $gTrace ) array_pop( $gFunction );
 }
