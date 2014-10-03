@@ -61,6 +61,7 @@ function makeActive(area) {
 				if( e[i].value == 'other' ) {
 					var f = document.getElementById('pledgeOther');
 					f = f.value.replace(/,/g,'');
+//					f = f.value.replace(/^[0-9\.]/g,'');
 					if( f > 0 ) ok = 1;
 				} else {
 					ok = 1;
@@ -191,6 +192,15 @@ function setAmount() {
 	}
 	e = document.getElementById('amount');
 	e.value = x;
+}
+
+function setChecked() {
+	var e = document.getElementsByName('Pledges');
+	for( var i=0; i<e.length; i++ ) {
+		if( e[i].value == 'other' ) {
+			e[i].checked = true;
+		}
+	}
 }
 
 function setValue( id, value ) {

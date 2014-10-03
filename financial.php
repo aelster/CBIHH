@@ -62,7 +62,7 @@
   <div id="content">
   <!-- InstanceBeginEditable name="Content" -->
   <input type=hidden name=from id=from value=financial />
-  <h2>5774 High Holy Day Appeal </h2>
+  <h2>5775 High Holy Day Appeal </h2>
   <?php
 DoQuery( "select sum(amount), count(pledgeType) from pledges where pledgeType = $PledgeTypeFinancial" );
 list( $total,$num ) = mysql_fetch_array( $GLOBALS['mysql_result'] );
@@ -107,7 +107,9 @@ echo "<hr>";
   <div>
     <table class=pledge_other>
     <tr>
-        <td><input type="radio" name="Pledges" value=other onClick="makeActive('pledges');" />Other: <input type=text name=PledgeOther id=pledgeOther onkeyup="makeActive('pledges');" /></td>
+        <td>
+			 <input type="radio" name="Pledges" value=other onClick="makeActive('pledges');" />Other:
+			 <input type=text name=PledgeOther id=pledgeOther onkeyup="makeActive('pledges');" onclick="setChecked();" /></td>
       </tr>
       </table>
 	</div>
