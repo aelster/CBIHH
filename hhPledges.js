@@ -60,9 +60,8 @@ function makeActive(area) {
 			if( e[i].checked ) {
 				if( e[i].value == 'other' ) {
 					var f = document.getElementById('pledgeOther');
-					f = f.value.replace(/,/g,'');
-//					f = f.value.replace(/^[0-9\.]/g,'');
-					if( f > 0 ) ok = 1;
+					var g = f.value.replace(/[\$,]/g,'');
+				if( g > 0 ) ok = 1;
 				} else {
 					ok = 1;
 				}
@@ -183,8 +182,8 @@ function setAmount() {
 	for( var i=0; i<e.length; i++ ) {
 		if( e[i].checked ) {
 			if( e[i].value == 'other' ) {
-				var t = document.getElementById('pledgeOther').value;
-				var x = t.replace(/,/g,'');
+				var t = document.getElementById('pledgeOther');
+				var x = t.value.replace(/[\$,]/g,'');
 		} else {
 				var x = e[i].value;
 			}
@@ -192,6 +191,7 @@ function setAmount() {
 	}
 	e = document.getElementById('amount');
 	e.value = x;
+	return true;
 }
 
 function setChecked() {
